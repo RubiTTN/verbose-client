@@ -140,11 +140,7 @@ export default class PagesList extends Component {
       <Query query={GET_PAGES_DB}>
         {({ data: { pages }, loading }) => {
           if (loading) return null
-          return (
-            <Layout>
-              <Table columns={columns} dataSource={pages} rowKey="id" />
-            </Layout>
-          )
+          return <Table columns={columns} dataSource={pages} rowKey="id" />
         }}
       </Query>
     )

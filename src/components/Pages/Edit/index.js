@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import omit from 'lodash/omit'
 import sortBy from 'lodash/sortBy'
 
-import Layout from '../../Layout'
 import PageForm from '../Add/PageForm'
 import SortableList from '../Add/SortableList'
 import PageItem from '../Add/AddPageItem'
@@ -115,20 +114,18 @@ class EditPage extends Component {
   render() {
     const { loading } = this.state
     return !loading ? (
-      <Layout>
-        <AddNewPageWrapper>
-          <Card title="Edit Page">
-            <PageForm upsertPage={this.upsertPage} />
-            <SortableList />
-            <PageItem />
-            <ActionButtonsWrapper>
-              <Button type="primary" onClick={this.upsertPage}>
-                Update Page
-              </Button>
-            </ActionButtonsWrapper>
-          </Card>
-        </AddNewPageWrapper>
-      </Layout>
+      <AddNewPageWrapper>
+        <Card title="Edit Page">
+          <PageForm upsertPage={this.upsertPage} />
+          <SortableList />
+          <PageItem />
+          <ActionButtonsWrapper>
+            <Button type="primary" onClick={this.upsertPage}>
+              Update Page
+            </Button>
+          </ActionButtonsWrapper>
+        </Card>
+      </AddNewPageWrapper>
     ) : null
   }
 }
