@@ -21,9 +21,11 @@ import MediaLibrary from '../components/MediaLibrary'
 
 class AuthContent extends React.Component {
   render() {
+    const {updateToken} = this.props;
+
     return (
       <Router>
-        <Layout>
+        <Layout updateToken={updateToken}>
           <Switch>
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/dashboard/faqs" component={FaqList} />

@@ -17,7 +17,7 @@ export default class DashboardLayout extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, updateToken } = this.props
     return (
       <User>
         {({ data: { me } }) => (
@@ -28,11 +28,11 @@ export default class DashboardLayout extends Component {
                 theme="dark"
                 mode="horizontal"
                 defaultSelectedKeys={['2']}
-                style={{ lineHeight: '64px' }}
+                style={{ lineHeight: '64px', float: 'right'}}
               >
                 {me && (
                   <Menu.Item key="3">
-                    <Logout />
+                    <Logout updateToken={updateToken}/>
                   </Menu.Item>
                 )}
                 {!me && (

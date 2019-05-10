@@ -11,12 +11,15 @@ const LOG_OUT_MUTATION = gql`
     }
   }
 `
-const Logout = props => (
+const Logout = ({updateToken}) => (
   <Mutation
     mutation={LOG_OUT_MUTATION}
     refetchQueries={[{ query: CURRENT_USER_QUERY }]}
   >
-    {logout => <Button onClick={logout}>Log Out</Button>}
+    {logout => <Button onClick={async e => {
+              await logout();
+              updateToken();
+            }}>Log Out</Button>}
   </Mutation>
 )
 
