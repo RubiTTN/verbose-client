@@ -61,6 +61,8 @@ const data = {
   alertBoxes: [],
   prosAndCons: [],
   quickTips: [],
+  pageFaqs: [],
+  pageFaqAccordions: []
 }
 cache.writeData({
   data,

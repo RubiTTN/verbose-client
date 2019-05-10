@@ -42,6 +42,18 @@ export const UPDATE_BOX = gql`
   }
 `
 
+export const UPDATE_PAGE_FAQ_ACCORDIAN = gql`
+  mutation UpdatePageFaqAccordion($name: String, $value: String, $itemId: String) {
+    UpdatePageFaqAccordion(name: $name, value: $value, itemId: $itemId) @client
+  }
+`
+
+export const UPDATE_PAGE_FAQ = gql`
+  mutation UpdatePageFaq($name: String, $value: String, $itemId: String) {
+    UpdatePageFaq(name: $name, value: $value, itemId: $itemId) @client
+  }
+`
+
 export const UPDATE_BOX_MEDIA = gql`
   mutation UpdateBoxMedia($media: Media, $itemId: String) {
     updateBoxMedia(media: $media, itemId: $itemId) @client
@@ -238,6 +250,22 @@ export const DELETE_BOX_TO_DB = gql`
   }
 `
 
+export const DELETE_PAGE_FAQ_ACCORDIAN_TO_DB = gql`
+  mutation DELETE_PAGE_FAQ_ACCORDIAN_TO_DB($id: ID!) {
+    deletePageFaqAccordion(id: $id) {
+      id
+    }
+  }
+`
+
+export const DELETE_PAGE_FAQ_TO_DB = gql`
+  mutation DELETE_PAGE_FAQ_TO_DB($id: ID!) {
+    deletePageFaq(id: $id) {
+      id
+    }
+  }
+`
+
 export const UPSERT_ALERT_BOX_TO_DB = gql`
   mutation UPSERT_ALERT_BOX(
     $id: ID!
@@ -349,6 +377,42 @@ export const DELETE_PROS_AND_CONS_TO_DB = gql`
 export const UPDATE_SECTIONS_ORDER_TO_DB = gql`
   mutation UPDATE_SECTIONS_ORDER($sectionsOrder: [SectionsOrder]!) {
     updateSectionsOrder(sectionsOrder: $sectionsOrder) {
+      id
+    }
+  }
+`
+
+export const UPSERT_PAGE_FAQ_ACCORDIAN_TO_DB = gql`
+  mutation UPSERT_PAGE_FAQ_ACCORDIAN_TO_DB(
+    $id: ID!
+    $page: ID!
+    $faqCategory: ID!
+    $order: Int
+  ) {
+    upsertPageFaqAccordion(
+      id: $id
+      page: $page
+      faqCategory: $faqCategory
+      order: $order
+    ) {
+      id
+    }
+  }
+`
+
+export const UPSERT_PAGE_FAQ_TO_DB = gql`
+  mutation UPSERT_PAGE_FAQ_TO_DB(
+    $id: ID!
+    $page: ID!
+    $faq: ID!
+    $order: Int
+  ) {
+    upsertPageFaq(
+      id: $id
+      page: $page
+      faq: $faq
+      order: $order
+    ) {
       id
     }
   }

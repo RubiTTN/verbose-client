@@ -58,9 +58,9 @@ class SortableList extends Component {
         return <AlertBox {...props} />
       case 'ProsAndCons':
         return <ProsAndCons {...props} />
-      case 'Faq':
+      case 'PageFaq':
         return <Faq {...props} />
-      case 'FaqAccordion':
+      case 'PageFaqAccordion':
         return <FaqAccordion {...props} />
       case 'Grid':
         return <Grid {...props} />
