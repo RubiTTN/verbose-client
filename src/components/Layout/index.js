@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd'
+import { Layout, Menu } from 'antd'
 import { Link } from 'react-router-dom'
 
-import { string } from 'postcss-selector-parser';
+import { object } from 'prop-types'
 import User from '../User'
 import { Logo } from './styles'
 import Logout from '../Logout'
 import SidebarMenu from './SidebarMenu'
+import Breadcrumb from './Breadcrumb'
 
 const { Header, Content } = Layout
 
 export default class DashboardLayout extends Component {
   static propTypes = {
-    children: string,
+    children: object,
   }
 
   render() {
@@ -44,11 +45,7 @@ export default class DashboardLayout extends Component {
             <Layout>
               <SidebarMenu />
               <Layout style={{ padding: '0 24px 24px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item>Home</Breadcrumb.Item>
-                  <Breadcrumb.Item>List</Breadcrumb.Item>
-                  <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb />
                 <Content
                   style={{
                     background: '#fff',
