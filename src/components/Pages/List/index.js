@@ -4,7 +4,6 @@ import Highlighter from 'react-highlight-words'
 import { Query } from 'react-apollo'
 import { Link } from 'react-router-dom'
 
-import Layout from '../../Layout'
 import { GET_PAGES_DB } from '../queries'
 
 export default class PagesList extends Component {
