@@ -3,7 +3,6 @@ import { Card, Button, message } from 'antd'
 import { withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
 
-import Layout from '../../Layout'
 import PageForm from './PageForm'
 import SortableList from './SortableList'
 import AddPageItem from './AddPageItem'
@@ -41,20 +40,18 @@ class AddPage extends Component {
 
   render() {
     return (
-      <Layout>
-        <AddNewPageWrapper>
-          <Card title="Add New Page">
-            <PageForm upsertPage={this.upsertPage} />
-            <SortableList />
-            <AddPageItem />
-            <ActionButtonsWrapper>
-              <Button type="primary" onClick={this.upsertPage}>
-                Add Page
-              </Button>
-            </ActionButtonsWrapper>
-          </Card>
-        </AddNewPageWrapper>
-      </Layout>
+      <AddNewPageWrapper>
+        <Card title="Add New Page">
+          <PageForm upsertPage={this.upsertPage} />
+          <SortableList />
+          <AddPageItem />
+          <ActionButtonsWrapper>
+            <Button type="primary" onClick={this.upsertPage}>
+              Add Page
+            </Button>
+          </ActionButtonsWrapper>
+        </Card>
+      </AddNewPageWrapper>
     )
   }
 }

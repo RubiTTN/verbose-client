@@ -61,10 +61,7 @@ class EditorBox extends Component {
         style={{ top: 10 }}
         okText="Insert Image"
       >
-        <MediaLibrary
-          includeLayout={false}
-          onMediaSelect={this.onMediaSelect}
-        />
+        <MediaLibrary onMediaSelect={this.onMediaSelect} />
       </Modal>
     ) : null
 
