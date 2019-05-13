@@ -30,6 +30,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-sortablejs": "^1.5.1",
+    "serve": "^11.0.0",
     "shortid": "^2.2.14",
     "sortablejs": "1.6.1",
     "styled-components": "^4.2.0",
@@ -37,10 +38,11 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "dev": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "start": "serve -l 3003 -s build"
   },
   "browserslist": [
     ">0.2%",

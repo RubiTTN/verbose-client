@@ -12,7 +12,7 @@ import { resolvers } from './resolvers'
 
 const cache = new InMemoryCache()
 const link = createUploadLink({
-  uri: 'http://localhost:4400/',
+  uri: process.env.REACT_APP_API_SERVER,
   credentials: 'include',
 })
 
