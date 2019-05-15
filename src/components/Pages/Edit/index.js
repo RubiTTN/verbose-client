@@ -67,6 +67,8 @@ class EditPage extends Component {
       'prosAndCons',
       'alertBoxes',
       'quickTips',
+      'faqAccordion',
+      'faqs',
     ])
 
     const { blocks } = page
@@ -74,6 +76,8 @@ class EditPage extends Component {
     const { prosAndCons } = page
     const { quickTips } = page
     const { alertBoxes } = page
+    const { faqAccordion } = page
+    const { faqs } = page
 
     const pageItems = []
     const pageItemsMerge = [
@@ -82,6 +86,8 @@ class EditPage extends Component {
       ...prosAndCons,
       ...alertBoxes,
       ...quickTips,
+      ...faqAccordion,
+      ...faqs,
     ]
     sortBy(pageItemsMerge, ['order']).forEach(item => {
       const pageItem = {
@@ -92,7 +98,6 @@ class EditPage extends Component {
       }
       pageItems.push(pageItem)
     })
-
     client.replaceStore({
       data: {
         page: pageData,
@@ -102,10 +107,11 @@ class EditPage extends Component {
         boxes: sortBy(boxes, ['media']),
         alertBoxes,
         prosAndCons,
+        pageFaqAccordions: faqAccordion.map(faq => ({...faq, faqCategory: faq.faqCategory.id})),
+        pageFaqs: faqs.map(faq => ({...faq, faq: faq.faq.id})),
         quickTips: sortBy(quickTips, ['media']),
       },
-    })
-
+    })  
     if (page) {
       this.setState({ loading: false })
     }

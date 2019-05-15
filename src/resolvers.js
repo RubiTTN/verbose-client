@@ -10,6 +10,8 @@ import {
   GET_ALERT_BOXES,
   GET_PROS_AND_CONS,
   GET_QUICK_TIPS,
+  GET_PAGE_FAQ_ACCORDIANS,
+  GET_PAGE_FAQS,
 } from './components/Pages/queries'
 
 export const resolvers = {
@@ -54,6 +56,24 @@ export const resolvers = {
 
       return prosAndConsDoc
     },
+    pageFaqAccordion: (_root, variables, { cache }) => {
+      const { itemId } = variables
+
+      const { pageFaqAccordions } = cache.readQuery({ query: GET_PAGE_FAQ_ACCORDIANS })
+      
+      const pageFaqAccordion = pageFaqAccordions.filter(item => item.id === itemId)[0]
+      
+      return pageFaqAccordion
+    },
+    pageFaq: (_root, variables, { cache }) => {
+      const { itemId } = variables
+
+      const { pageFaqs } = cache.readQuery({ query: GET_PAGE_FAQS })
+      
+      const pageFaq = pageFaqs.filter(item => item.id === itemId)[0]
+      
+      return pageFaq
+    }
   },
   Mutation: {
     updatePage: (_root, variables, { cache, getCacheKey }) => {
@@ -240,6 +260,30 @@ export const resolvers = {
           prosAndCons: [...prosAndCons, newProsAndCons],
         }
         cache.writeQuery({ query: GET_PROS_AND_CONS, data })
+      } else if (type === 'PageFaqAccordion') {
+        const { pageFaqAccordions } = cache.readQuery({ query: GET_PAGE_FAQ_ACCORDIANS })
+        const newPageFaqAccordion = {
+          id: newPageItem.itemId,
+          faqCategory: '',
+          order,
+          __typename: 'PageFaqAccordion',
+        }
+        data = {
+          pageFaqAccordions: [...pageFaqAccordions, newPageFaqAccordion],
+        }
+        cache.writeQuery({ query: GET_PAGE_FAQ_ACCORDIANS, data })
+      } else if (type === 'PageFaq') {
+        const { pageFaqs } = cache.readQuery({ query: GET_PAGE_FAQS })
+        const newPageFaq = {
+          id: newPageItem.itemId,
+          faq: '',
+          order,
+          __typename: 'PageFaq',
+        }
+        data = {
+          pageFaqs: [...pageFaqs, newPageFaq],
+        }
+        cache.writeQuery({ query: GET_PAGE_FAQS, data })
       }
 
       return data
@@ -348,6 +392,34 @@ export const resolvers = {
       const id = getCacheKey({ __typename: 'Box', id: itemId })
       const fragment = gql`
         fragment updateBox on Box {
+          ${name}
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, [`${name}`]: value }
+      cache.writeData({ id, data })
+    },
+    UpdatePageFaqAccordion: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, itemId } = variables
+
+      const id = getCacheKey({ __typename: 'PageFaqAccordion', id: itemId })
+      const fragment = gql`
+        fragment updatePageFaqAccordion on PageFaqAccordion {
+          ${name}
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, [`${name}`]: value }
+      cache.writeData({ id, data })
+    },
+    UpdatePageFaq: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, itemId } = variables
+
+      const id = getCacheKey({ __typename: 'PageFaq', id: itemId })
+      const fragment = gql`
+        fragment updatePageFaq on PageFaq {
           ${name}
         }
       `

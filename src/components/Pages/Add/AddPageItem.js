@@ -43,8 +43,8 @@ class AddPageItem extends Component {
           <Option value="Box">Box</Option>
           <Option value="AlertBox">Alert Box</Option>
           <Option value="ProsAndCons">Pros and Cons</Option>
-          <Option value="Faq">Faq</Option>
-          <Option value="FaqAccordion">Faq Accordion</Option>
+          <Option value="PageFaq">Faq</Option>
+          <Option value="PageFaqAccordion">Faq Accordion</Option>
           <Option value="QuickTip">Quick Tip</Option>
           <Option value="Grid">Grid</Option>
         </Select>

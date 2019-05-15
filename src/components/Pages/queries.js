@@ -77,6 +77,26 @@ export const GET_BOXES = gql`
   }
 `
 
+export const GET_PAGE_FAQ_ACCORDIANS = gql`
+  query GetPageFaqAccordions {
+    pageFaqAccordions @client {
+      id
+      faqCategory
+      order
+    }
+  }
+`
+
+export const GET_PAGE_FAQS = gql`
+  query GetPageFaqs {
+    pageFaqs @client {
+      id
+      faq
+      order
+    }
+  }
+`
+
 export const GET_BOX = gql`
   query GetBox($itemId: String) {
     box(itemId: $itemId) @client {
@@ -273,6 +293,50 @@ export const GET_PAGE_DB = gql`
           content
         }
       }
+      faqAccordion {
+        id
+        faqCategory {
+          id
+        }
+        order
+      }
+      faqs {
+        id
+        order
+        faq {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const SEARCH_FAQS_DB = gql`
+  query searchFaq($searchString: String) {
+    searchFaq(searchString: $searchString) {
+      id
+      title
+      description
+    }
+  }
+`
+
+export const GET_PAGE_FAQ_ACCORDIAN = gql`
+  query GetPageFaqAccordion($itemId: String) {
+    pageFaqAccordion(itemId: $itemId) @client {
+      id
+      order
+      faqCategory
+    }
+  }
+`
+
+export const GET_PAGE_FAQ = gql`
+  query GetPageFaq($itemId: String) {
+    pageFaq(itemId: $itemId) @client {
+      id
+      order
+      faq
     }
   }
 `
