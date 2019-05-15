@@ -1,23 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { withApollo, Query } from 'react-apollo'
-import gql from 'graphql-tag'
 
 import { SEARCH_FAQS_DB, GET_PAGE, GET_PAGE_FAQ } from '../../../queries'
 import { REPLACE_PAGE_ITEMS_ID, UPDATE_PAGE_FAQ, UPSERT_PAGE_FAQ_TO_DB, DELETE_PAGE_FAQ_TO_DB } from '../../../mutaitons'
 import { BoxSaveButtonWrapper } from '../FaqAccordion/styles'
 import { Form, Input, AutoComplete, Button, Icon, Modal, message } from 'antd'
+import { GET_FAQ_DB } from './queries'
 
 const Option = AutoComplete.Option;
 
-const GET_FAQ_DB = gql`
-query faq($id: ID){
-  faq(id:$id) {
-    title
-    description
-  }
-}
-`
 
 class Faq extends Component {
   state = {

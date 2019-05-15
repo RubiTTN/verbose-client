@@ -1,23 +1,13 @@
 import React, { Fragment } from 'react'
 import { Query, withApollo } from 'react-apollo'
 import { Form, Button, Modal, message } from 'antd'
-import gql from 'graphql-tag'
 
 import { QuestionsWrapper, BoxSaveButtonWrapper } from './styles'
 import SelectBox from '../../../../Generic/SelectBox'
 import { GET_FAQ_CATEGORIES_DB } from '../../../../Faqs/Categories/queries'
-import { GET_PAGE, GET_PAGE_FAQ_ACCORDIAN } from '../../../queries';
+import { GET_PAGE, GET_PAGE_FAQ_ACCORDIAN } from '../../../queries'
 import { UPDATE_PAGE_FAQ_ACCORDIAN, UPSERT_PAGE_FAQ_ACCORDIAN_TO_DB, REPLACE_PAGE_ITEMS_ID, DELETE_PAGE_FAQ_ACCORDIAN_TO_DB } from '../../../mutaitons';
-
-const GET_FAQ_CATEGORY_DB = gql`
-query faqCategory($id: ID){
-  faqCategory(id: $id) {
-    faqs {
-      title
-    }
-  }
-}
-`
+import { GET_FAQ_CATEGORY_DB } from './queries'
 
 function FaqAccordion({client, itemId, rerenderSortable, removeItem}) {
   const onCategoryChange = (noOP, name, value) => {
