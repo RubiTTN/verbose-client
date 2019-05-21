@@ -27,7 +27,7 @@ class ListPage extends React.Component {
     pagination : {
       current: 1,
       total: 0,
-      pageSize: 1
+      pageSize: 8
     },
     loading: false,
   }
