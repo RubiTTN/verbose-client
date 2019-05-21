@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
-import { Query } from 'react-apollo'
-import keys from 'lodash/keys'
+import { withApollo } from 'react-apollo'
 import styled from 'styled-components'
 import { Button } from 'antd'
+import keys from 'lodash/keys'
 
 import { object, string, array } from 'prop-types'
 import DataTable from '../DataTable'
@@ -12,7 +12,7 @@ const AddNewButton = styled.div`
   margin-bottom: 20px;
 `
 
-export default class ListPage extends React.Component {
+class ListPage extends React.Component {
   static propTypes = {
     getListQuery: object.isRequired,
     attributes: array.isRequired,
@@ -22,14 +22,52 @@ export default class ListPage extends React.Component {
     history: object,
   }
 
+  state = {
+    dataSource : [],
+    pagination : {
+      current: 1,
+      total: 0,
+      pageSize: 1
+    },
+    loading: false,
+  }
+
+  componentDidMount = () => {
+    this.fetchListData();
+  }
+
+  handleTableChange = (pagination, filters, sorter) => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    }, () => {
+      this.fetchListData();
+    });
+  }
+
+  fetchListData = async (params = {}) => {
+    const { client, getListQuery} = this.props
+    const { pagination: { current, pageSize: first } } = this.state;
+
+    this.setState({ loading: true });
+
+    const { data, 
+      data : { [keys(data)[0]] : { items: dataSource, meta : {total_count: total} } },
+    } = await client.query({
+      query: getListQuery,
+      variables: { first , skip: (current - 1) * first },
+    })
+    
+    const pagination = { ...this.state.pagination, total };
+    this.setState({ dataSource, pagination, loading: false });
+  };
+
   render() {
-    const { getListQuery, addUrl, history, ...rest } = this.props
+    const { addUrl, history, ...rest } = this.props
+    const { pagination, dataSource, loading } = this.state;
+
     return (
-      <Query query={getListQuery} fetchPolicy="network-only">
-        {({ data, loading }) => {
-          if (loading) return null
-          const listData = data[keys(data)[0]]
-          return (
             <Fragment>
               {addUrl && (
                 <AddNewButton>
@@ -38,11 +76,16 @@ export default class ListPage extends React.Component {
                   </Button>
                 </AddNewButton>
               )}
-              <DataTable data={listData} {...rest} />
+              <DataTable 
+                dataSource={dataSource} 
+                pagination={pagination}
+                handleTableChange={this.handleTableChange}
+                loading={loading}
+                {...rest} 
+              />
             </Fragment>
           )
-        }}
-      </Query>
-    )
   }
 }
+
+export default withApollo(ListPage)

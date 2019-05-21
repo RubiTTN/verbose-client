@@ -20,15 +20,20 @@ export const GET_FAQ_CATEGORY_DB = gql`
 `
 
 export const GET_FAQ_CATEGORIES_DB = gql`
-    {
-      faqCategories {         
+  query getFaqCategories($first: Int $skip:Int) {
+    faqCategories(first: $first skip: $skip) {         
+      items {
+        id
+        name
+        slug
+        description
+        faqs {
           id
-          name
-          slug
-          description
-          faqs {
-            id
-          }
         }
+      }
+      meta {
+        total_count
+      }
     }
+  }
 `

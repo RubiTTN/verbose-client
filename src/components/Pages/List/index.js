@@ -1,14 +1,25 @@
 import React, { Component } from 'react'
 import { Table, Input, Button, Icon } from 'antd'
 import Highlighter from 'react-highlight-words'
-import { Query } from 'react-apollo'
+import { withApollo } from 'react-apollo'
 import { Link } from 'react-router-dom'
 
 import { GET_PAGES_DB } from '../queries'
 
-export default class PagesList extends Component {
+class PagesList extends Component {
   state = {
     searchText: '',
+    dataSource : [],
+    pagination : {
+      current: 1,
+      total: 0,
+      pageSize: 8
+    },
+    loading: false,
+  }
+
+  componentDidMount = () => {
+    this.fetchPageList();
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -85,6 +96,33 @@ export default class PagesList extends Component {
     this.setState({ searchText: '' })
   }
 
+  handleTableChange = (pagination, filters, sorter) => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    },  () => {
+      this.fetchPageList();
+    });
+   
+  }
+
+  fetchPageList = async (params = {}) => {
+    const { client } = this.props
+    const { pagination: { current, pageSize: first } } = this.state;
+    this.setState({ loading: true });
+
+    const {
+      data : { pages : { items: dataSource, meta : {total_count: total } } },
+    } = await client.query({
+      query: GET_PAGES_DB,
+      variables: { first, skip: (current - 1) * first },
+    })
+
+    const pagination = { ...this.state.pagination, total };
+    this.setState({ dataSource, pagination, loading: false });
+  };
+
   render() {
     const columns = [
       {
@@ -134,14 +172,18 @@ export default class PagesList extends Component {
         ),
       },
     ]
-
+    const {pagination, dataSource, loading} = this.state;
     return (
-      <Query query={GET_PAGES_DB}>
-        {({ data: { pages }, loading }) => {
-          if (loading) return null
-          return <Table columns={columns} dataSource={pages} rowKey="id" />
-        }}
-      </Query>
+          <Table 
+          rowKey="id"  
+          columns={columns} 
+          dataSource={dataSource} 
+          pagination={pagination}
+          onChange={this.handleTableChange}
+          loading={loading}
+          />
     )
   }
 }
+
+export default withApollo(PagesList);

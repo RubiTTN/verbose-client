@@ -49,23 +49,28 @@ export const GET_FAQ_DB = gql`
 `
 
 export const GET_FAQS_DB = gql`
-    {
-        faqs {
-            id
-            title
-            description
-            short_description
-            vertical
-            authors {
+    query getFaqs($first:Int $skip:Int) {
+        faqs(first: $first skip: $skip) {
+            items {
                 id
+                title
+                description
+                short_description
+                vertical
+                authors {
+                    id
+                }
+                category {
+                    id
+                }
+                variant
+                tag
+                slug
+                order
             }
-            category {
-                id
+           meta {
+            total_count
             }
-            variant
-            tag
-            slug
-            order
         }
     }
 `
