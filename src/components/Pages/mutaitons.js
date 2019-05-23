@@ -153,6 +153,7 @@ export const UPSERT_PAGE_TO_DB = gql`
     $title: String!
     $media: ID
     $slug: String!
+    $url: String!
     $type: PageType!
     $vertical: String
     $template: String
@@ -163,6 +164,7 @@ export const UPSERT_PAGE_TO_DB = gql`
       media: $media
       title: $title
       slug: $slug
+      url: $url
       type: $type
       vertical: $vertical
       template: $template
@@ -171,6 +173,7 @@ export const UPSERT_PAGE_TO_DB = gql`
       id
       title
       slug
+      url
       type
       vertical
       template
