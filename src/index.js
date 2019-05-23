@@ -62,7 +62,8 @@ const data = {
   prosAndCons: [],
   quickTips: [],
   pageFaqs: [],
-  pageFaqAccordions: []
+  pageFaqAccordions: [],
+  grids: []
 }
 cache.writeData({
   data,

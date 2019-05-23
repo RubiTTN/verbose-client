@@ -69,15 +69,10 @@ class EditPage extends Component {
       'quickTips',
       'faqAccordion',
       'faqs',
+      'grids',
     ])
 
-    const { blocks } = page
-    const { boxes } = page
-    const { prosAndCons } = page
-    const { quickTips } = page
-    const { alertBoxes } = page
-    const { faqAccordion } = page
-    const { faqs } = page
+    const { blocks, boxes, prosAndCons, quickTips, alertBoxes, faqAccordion, faqs, grids } = page
 
     const pageItems = []
     const pageItemsMerge = [
@@ -88,6 +83,7 @@ class EditPage extends Component {
       ...quickTips,
       ...faqAccordion,
       ...faqs,
+      ...grids,
     ]
     sortBy(pageItemsMerge, ['order']).forEach(item => {
       const pageItem = {
@@ -110,6 +106,7 @@ class EditPage extends Component {
         pageFaqAccordions: faqAccordion.map(faq => ({...faq, faqCategory: faq.faqCategory.id})),
         pageFaqs: faqs.map(faq => ({...faq, faq: faq.faq.id})),
         quickTips: sortBy(quickTips, ['media']),
+        grids,
       },
     })  
     if (page) {

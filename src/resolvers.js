@@ -1,6 +1,8 @@
 import shortid from 'shortid'
 import gql from 'graphql-tag'
 import remove from 'lodash/remove'
+import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import { sentenceCase } from 'change-case'
 
 import {
@@ -12,6 +14,7 @@ import {
   GET_QUICK_TIPS,
   GET_PAGE_FAQ_ACCORDIANS,
   GET_PAGE_FAQS,
+  GET_GRIDS,
 } from './components/Pages/queries'
 
 export const resolvers = {
@@ -56,22 +59,30 @@ export const resolvers = {
 
       return prosAndConsDoc
     },
+    gridById: (_root, variables, { cache }) => {
+      const { itemId } = variables
+
+      const { grids } = cache.readQuery({ query: GET_GRIDS })
+      const grid = grids.filter(item => item.id === itemId)[0]
+      
+      return grid
+    },
     pageFaqAccordion: (_root, variables, { cache }) => {
       const { itemId } = variables
 
       const { pageFaqAccordions } = cache.readQuery({ query: GET_PAGE_FAQ_ACCORDIANS })
-      
+
       const pageFaqAccordion = pageFaqAccordions.filter(item => item.id === itemId)[0]
-      
+
       return pageFaqAccordion
     },
     pageFaq: (_root, variables, { cache }) => {
       const { itemId } = variables
 
       const { pageFaqs } = cache.readQuery({ query: GET_PAGE_FAQS })
-      
+
       const pageFaq = pageFaqs.filter(item => item.id === itemId)[0]
-      
+
       return pageFaq
     }
   },
@@ -284,6 +295,33 @@ export const resolvers = {
           pageFaqs: [...pageFaqs, newPageFaq],
         }
         cache.writeQuery({ query: GET_PAGE_FAQS, data })
+      } else if (type === 'Grid') {
+        const { grids } = cache.readQuery({ query: GET_GRIDS })
+        const gridId = shortid.generate()+shortid.generate()
+        const newGrid = {
+          id: newPageItem.itemId,
+          title: '',
+          content: '',
+          order,
+          items: [{
+            id: gridId,
+            title:'',
+            content:'',
+            linkText:'',
+            linkUrl:'',
+            media: {
+              id: null,
+              url: null,
+              __typename: 'Media',
+            },
+            __typename: 'GridItem'
+          }],
+          __typename: 'Grid',
+        }
+        data = {
+          grids: [...grids, newGrid],
+        }
+        cache.writeQuery({ query: GET_GRIDS, data })
       }
 
       return data
@@ -336,7 +374,6 @@ export const resolvers = {
       const data = {
         pageItems,
       }
-
       cache.writeQuery({ query: GET_PAGE_ITEMS, data })
     },
     updateBlock: (_root, variables, { cache, getCacheKey }) => {
@@ -352,6 +389,80 @@ export const resolvers = {
 
       const data = { ...previous, [`${name}`]: value }
       cache.writeData({ id, data })
+    },
+    updateGrid: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, itemId, gridItemId } = variables
+      const id = getCacheKey({ __typename: 'Grid', id: itemId })
+      if (gridItemId) {
+        const fragment = gql`
+          fragment updateGridItem on Grid {
+            items {
+              id
+              title
+              content
+              linkText
+              linkUrl
+              media {
+                id
+                url
+              }
+            }
+          }
+        `
+        const previous = cache.readFragment({ fragment, id })
+        const { items } = previous
+        const index = findIndex(items, { id: gridItemId })
+        if (index !== -1) {
+          items[index][name] = value
+          //Here: Cache expects an Array, not object.
+          const data = [...items]
+          cache.writeData({ id, data })
+        }
+      } else {
+        const fragment = gql`
+          fragment updateGrid on Grid {
+            ${name}
+          }
+        `
+        const previous = cache.readFragment({ fragment, id })
+        const data = { ...previous, [`${name}`]: value }
+        cache.writeData({ id, data })
+      }
+    },
+    addGridItem: (_root, variables, { cache }) => {
+      const { itemId } = variables
+
+      const { grids } = cache.readQuery({ query: GET_GRIDS })
+      const grid = find(grids, { id: itemId })
+      const gridId = shortid.generate()+shortid.generate()
+      grid.items.push({
+        id: gridId,
+        title: '',
+        content: '',
+        linkText: '',
+        linkUrl: '',
+        media : {
+          id: null,
+          url: null,
+          __typename: 'Media'
+        },
+        __typename: 'GridItem'
+      })
+      const data = { grids }
+      cache.writeQuery({ query: GET_GRIDS, data })
+    },
+    removeGridItem: (_root, variables, { cache }) => {
+      const { itemId, gridItemId } = variables
+
+
+      const { grids } = cache.readQuery({ query: GET_GRIDS })
+      const grid = find(grids, { id: itemId })
+      const deleteIndex = findIndex(grid.items, {id: gridItemId})
+
+      grid.items.splice(deleteIndex, 1)
+
+      const data = { grids }
+      cache.writeQuery({ query: GET_GRIDS, data })
     },
     updateBlockMedia: (_root, variables, { cache, getCacheKey }) => {
       const { media, itemId } = variables
