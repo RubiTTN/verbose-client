@@ -33,6 +33,17 @@ export const PAGE_TEMPLATE_OPTIONS = [
   },
 ]
 
+export const PAGE_STATUS_OPTIONS = [
+  {
+    name: 'Draft',
+    value: 'DRAFT',
+  },
+  {
+    name: 'Published',
+    value: 'PUBLISHED',
+  },
+]
+
 export const VERTICAL_OPTIONS = [
   {
     name: 'Bad Credit',

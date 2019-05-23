@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
 import SelectMedia from '../../Generic/SelectMedia'
 import SelectBox from '../../Generic/SelectBox'
+import InputBox from '../../Generic/InputBox'
 import { GET_PAGE } from '../queries'
 import { UPDATE_PAGE, UPDATE_PAGE_MEDIA, DELETE_PAGE_MEDIA } from '../mutaitons'
 import {
   VERTICAL_OPTIONS,
   PAGE_TYPE_OPTIONS,
   PAGE_TEMPLATE_OPTIONS,
+  PAGE_STATUS_OPTIONS,
 } from '../../../constants/common'
 import { PageFormWrapper } from './styles'
-
-const { Option } = Select
 
 class PageForm extends Component {
   handleInputChange = (pageId, e, name, value) => {
@@ -48,15 +47,14 @@ class PageForm extends Component {
 
           return (
             <PageFormWrapper>
-              <Form.Item label="Title">
-                <Input
-                  name="title"
-                  type="text"
-                  value={title}
-                  onChange={e => this.handleInputChange(id, e)}
-                  onBlur={upsertPage}
-                />
-              </Form.Item>
+              <InputBox
+                label="Title"
+                name="title"
+                type="text"
+                value={title}
+                onChange={e => this.handleInputChange(id, e)}
+                onBlur={upsertPage}
+              />
               <SelectMedia
                 updateMediaMutation={UPDATE_PAGE_MEDIA}
                 deleteMediaMutation={DELETE_PAGE_MEDIA}
@@ -66,56 +64,52 @@ class PageForm extends Component {
                 }}
                 currentMedia={media}
               />
-              <Form.Item label="Type">
-                <SelectBox
-                  options={PAGE_TYPE_OPTIONS}
-                  name="type"
-                  value={type}
-                  onChange={(e, name, value) =>
-                    this.handleInputChange(id, null, name, value)
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Slug">
-                <Input
-                  name="slug"
-                  type="text"
-                  placeholder="Slug"
-                  value={slug}
-                  onChange={e => this.handleInputChange(id, e)}
-                />
-              </Form.Item>
-              <Form.Item label="Vertical">
-                <SelectBox
-                  options={VERTICAL_OPTIONS}
-                  name="vertical"
-                  value={vertical}
-                  onChange={(e, name, value) =>
-                    this.handleInputChange(id, null, name, value)
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Template">
-                <SelectBox
-                  options={PAGE_TEMPLATE_OPTIONS}
-                  name="template"
-                  value={template}
-                  onChange={(e, name, value) =>
-                    this.handleInputChange(id, null, name, value)
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Status">
-                <Select
-                  defaultValue={status}
-                  onChange={value => {
-                    this.handleInputChange(id, null, 'status', value)
-                  }}
-                >
-                  <Option value="DRAFT">Draft</Option>
-                  <Option value="PUBLISHED">Published</Option>
-                </Select>
-              </Form.Item>
+              <SelectBox
+                label="Type"
+                options={PAGE_TYPE_OPTIONS}
+                name="type"
+                value={type}
+                onChange={(e, name, value) =>
+                  this.handleInputChange(id, null, name, value)
+                }
+              />
+              <InputBox
+                label="Slug"
+                name="slug"
+                type="text"
+                placeholder="Slug"
+                value={slug}
+                onChange={e => this.handleInputChange(id, e)}
+              />
+              <SelectBox
+                label="Vertical"
+                options={VERTICAL_OPTIONS}
+                name="vertical"
+                value={vertical}
+                onChange={(e, name, value) =>
+                  this.handleInputChange(id, null, name, value)
+                }
+              />
+              <SelectBox
+                label="Template"
+                options={PAGE_TEMPLATE_OPTIONS}
+                name="template"
+                value={template}
+                onChange={(e, name, value) =>
+                  this.handleInputChange(id, null, name, value)
+                }
+              />
+
+              {/* PAGE_STATUS_OPTIONS */}
+              <SelectBox
+                label="Status"
+                options={PAGE_STATUS_OPTIONS}
+                name="status"
+                value={status}
+                onChange={(e, name, value) =>
+                  this.handleInputChange(id, null, name, value)
+                }
+              />
             </PageFormWrapper>
           )
         }}
