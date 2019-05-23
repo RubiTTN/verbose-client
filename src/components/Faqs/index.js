@@ -11,8 +11,8 @@ import {
   GET_FAQ_DB,
   GET_FAQS_DB,
   GET_USERS,
-  GET_FAQ_CATEGORIES,
 } from './queries'
+import { GET_FAQ_CATEGORIES_DB } from './Categories/queries';
 
 const faqFormFields = [
   { attribute: 'title' },
@@ -39,7 +39,7 @@ const faqFormFields = [
     Component: SelectBox,
     mode: 'multiple',
     optionsQuery: {
-      QUERY: GET_FAQ_CATEGORIES,
+      QUERY: GET_FAQ_CATEGORIES_DB,
       nameKey: 'name',
       valueKey: 'id',
     },

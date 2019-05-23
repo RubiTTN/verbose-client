@@ -211,14 +211,19 @@ export const GET_PROS_AND_CONS_BY_ID = gql`
 `
 
 export const GET_PAGES_DB = gql`
-  query getPages {
-    pages {
-      id
-      title
-      slug
-      type
-      vertical
-      status
+  query getPages($first: Int $skip:Int) {
+    pages (first: $first skip: $skip) {
+      items {
+        id
+        title
+        slug
+        type
+        vertical
+        status
+      }
+      meta {
+        total_count
+      }
     }
   }
 `

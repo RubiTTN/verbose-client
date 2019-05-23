@@ -48,7 +48,12 @@ export default class SelectBox extends React.Component {
       return <Query query={optionsQuery.QUERY}>
         {({ data, loading }) => {
           if (loading) return null
-          let queryData = data[keys(data)[0]]
+          let queryData = [];
+          if(data[keys(data)[0]].hasOwnProperty('items')) {
+            queryData = data[keys(data)[0]]['items']
+          }else{
+            queryData = data[keys(data)[0]]
+          }
           options = queryData.map(qd => ({
             name: qd[optionsQuery.nameKey],
             value: qd[optionsQuery.valueKey]

@@ -1,5 +1,5 @@
 import React from 'react'
-import { array, string } from 'prop-types'
+import { array, string, bool, func, object } from 'prop-types'
 import { Table, Input, Button, Icon } from 'antd'
 import Highlighter from 'react-highlight-words'
 import { titleCase } from 'change-case'
@@ -9,7 +9,10 @@ import isEmpty from 'lodash/isEmpty'
 export default class DataTable extends React.Component {
   static propTypes = {
     attributes: array.isRequired,
-    data: array.isRequired,
+    dataSource: array.isRequired,
+    loading: bool,
+    handleTableChange: func,
+    pagination: object,
     editUrl: string,
     customColumns: array,
   }
@@ -94,7 +97,7 @@ export default class DataTable extends React.Component {
 
   render() {
     const { attributes, editUrl, customColumns } = this.props
-    let { data } = this.props
+    let { dataSource, pagination, handleTableChange, loading } = this.props
 
     const columns = attributes.map(attribute => {
       const attributeName = attribute.name || attribute
@@ -133,8 +136,13 @@ export default class DataTable extends React.Component {
       columns.push(editActionColumn)
     }
 
-    data = data.map((e, i) => ({ ...e, key: i }))
-
-    return <Table columns={columns} dataSource={data} />
+    return <Table 
+            rowKey="id"  
+            columns={columns}
+            dataSource={dataSource} 
+            pagination={pagination}
+            onChange={handleTableChange}
+            loading={loading}
+    />
   }
 }
