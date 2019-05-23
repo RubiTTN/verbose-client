@@ -31,6 +31,7 @@ const data = {
     title: '',
     slug: '',
     vertical: 'home-loans',
+    template: 'full-width',
     type: 'NEWS',
     status: 'DRAFT',
     media: {
@@ -62,7 +63,7 @@ const data = {
   prosAndCons: [],
   quickTips: [],
   pageFaqs: [],
-  pageFaqAccordions: []
+  pageFaqAccordions: [],
 }
 cache.writeData({
   data,

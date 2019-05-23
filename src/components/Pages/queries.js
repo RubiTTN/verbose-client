@@ -9,6 +9,7 @@ export const GET_PAGE = gql`
       type
       slug
       status
+      template
       media {
         id
         url
@@ -211,8 +212,8 @@ export const GET_PROS_AND_CONS_BY_ID = gql`
 `
 
 export const GET_PAGES_DB = gql`
-  query getPages($first: Int $skip:Int) {
-    pages (first: $first skip: $skip) {
+  query getPages($first: Int, $skip: Int) {
+    pages(first: $first, skip: $skip) {
       items {
         id
         title
@@ -237,6 +238,7 @@ export const GET_PAGE_DB = gql`
       type
       vertical
       status
+      template
       media {
         id
         url
