@@ -43,7 +43,11 @@ export const UPDATE_BOX = gql`
 `
 
 export const UPDATE_PAGE_FAQ_ACCORDIAN = gql`
-  mutation UpdatePageFaqAccordion($name: String, $value: String, $itemId: String) {
+  mutation UpdatePageFaqAccordion(
+    $name: String
+    $value: String
+    $itemId: String
+  ) {
     UpdatePageFaqAccordion(name: $name, value: $value, itemId: $itemId) @client
   }
 `
@@ -151,6 +155,7 @@ export const UPSERT_PAGE_TO_DB = gql`
     $slug: String!
     $type: PageType!
     $vertical: String
+    $template: String
     $status: PageStatus!
   ) {
     upsertPage(
@@ -160,6 +165,7 @@ export const UPSERT_PAGE_TO_DB = gql`
       slug: $slug
       type: $type
       vertical: $vertical
+      template: $template
       status: $status
     ) {
       id
@@ -167,6 +173,7 @@ export const UPSERT_PAGE_TO_DB = gql`
       slug
       type
       vertical
+      template
       status
     }
   }
@@ -401,18 +408,8 @@ export const UPSERT_PAGE_FAQ_ACCORDIAN_TO_DB = gql`
 `
 
 export const UPSERT_PAGE_FAQ_TO_DB = gql`
-  mutation UPSERT_PAGE_FAQ_TO_DB(
-    $id: ID!
-    $page: ID!
-    $faq: ID!
-    $order: Int
-  ) {
-    upsertPageFaq(
-      id: $id
-      page: $page
-      faq: $faq
-      order: $order
-    ) {
+  mutation UPSERT_PAGE_FAQ_TO_DB($id: ID!, $page: ID!, $faq: ID!, $order: Int) {
+    upsertPageFaq(id: $id, page: $page, faq: $faq, order: $order) {
       id
     }
   }

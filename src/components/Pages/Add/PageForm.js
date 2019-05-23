@@ -4,8 +4,14 @@ import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
 import SelectMedia from '../../Generic/SelectMedia'
+import SelectBox from '../../Generic/SelectBox'
 import { GET_PAGE } from '../queries'
 import { UPDATE_PAGE, UPDATE_PAGE_MEDIA, DELETE_PAGE_MEDIA } from '../mutaitons'
+import {
+  VERTICAL_OPTIONS,
+  PAGE_TYPE_OPTIONS,
+  PAGE_TEMPLATE_OPTIONS,
+} from '../../../constants/common'
 import { PageFormWrapper } from './styles'
 
 const { Option } = Select
@@ -28,7 +34,16 @@ class PageForm extends Component {
       <Query query={GET_PAGE}>
         {({ data: { page }, loading }) => {
           if (loading) return null
-          const { id, title, slug, vertical, type, status, media } = page
+          const {
+            id,
+            title,
+            slug,
+            vertical,
+            template,
+            type,
+            status,
+            media,
+          } = page
           const { upsertPage } = this.props
 
           return (
@@ -52,16 +67,14 @@ class PageForm extends Component {
                 currentMedia={media}
               />
               <Form.Item label="Type">
-                <Select
-                  defaultValue={type}
-                  onChange={value => {
-                    this.handleInputChange(id, null, 'type', value)
-                  }}
-                >
-                  <Option value="PAGE">Page</Option>
-                  <Option value="NEWS">News</Option>
-                  <Option value="ARTICLE">Article</Option>
-                </Select>
+                <SelectBox
+                  options={PAGE_TYPE_OPTIONS}
+                  name="type"
+                  value={type}
+                  onChange={(e, name, value) =>
+                    this.handleInputChange(id, null, name, value)
+                  }
+                />
               </Form.Item>
               <Form.Item label="Slug">
                 <Input
@@ -73,16 +86,24 @@ class PageForm extends Component {
                 />
               </Form.Item>
               <Form.Item label="Vertical">
-                <Select
-                  defaultValue={vertical}
-                  onChange={value => {
-                    this.handleInputChange(id, null, 'vertical', value)
-                  }}
-                >
-                  <Option value="home-loans">Home Loans</Option>
-                  <Option value="car-loans">Car Loans</Option>
-                  <Option value="personal-loans">Personal Loans</Option>
-                </Select>
+                <SelectBox
+                  options={VERTICAL_OPTIONS}
+                  name="vertical"
+                  value={vertical}
+                  onChange={(e, name, value) =>
+                    this.handleInputChange(id, null, name, value)
+                  }
+                />
+              </Form.Item>
+              <Form.Item label="Template">
+                <SelectBox
+                  options={PAGE_TEMPLATE_OPTIONS}
+                  name="template"
+                  value={template}
+                  onChange={(e, name, value) =>
+                    this.handleInputChange(id, null, name, value)
+                  }
+                />
               </Form.Item>
               <Form.Item label="Status">
                 <Select

@@ -28,6 +28,7 @@ class AddPage extends Component {
         slug: page.slug,
         type: page.type,
         vertical: page.vertical,
+        template: page.template,
         status: page.status,
       },
     })
