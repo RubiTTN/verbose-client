@@ -8,6 +8,7 @@ export const GET_PAGE = gql`
       vertical
       type
       slug
+      url
       status
       template
       media {
@@ -235,6 +236,7 @@ export const GET_PAGE_DB = gql`
       id
       title
       slug
+      url
       type
       vertical
       status
@@ -344,6 +346,14 @@ export const GET_PAGE_FAQ = gql`
       id
       order
       faq
+    }
+  }
+`
+
+export const GENERATE_PAGE_URL = gql`
+  query generatePageUrl($slug: String!, $type: PageType!, $vertical: String!) {
+    generatePageUrl(slug: $slug, type: $type, vertical: $vertical) {
+      url
     }
   }
 `
