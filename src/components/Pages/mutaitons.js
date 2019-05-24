@@ -111,6 +111,22 @@ export const UPDATE_PROS_AND_CONS = gql`
   }
 `
 
+export const UPDATE_GRID = gql`
+  mutation UpdateGrid(
+    $name: String
+    $value: String
+    $itemId: String
+    $gridItemId: String
+  ) {
+    updateGrid(
+      name: $name
+      value: $value
+      itemId: $itemId
+      gridItemId: $gridItemId
+    ) @client
+  }
+`
+
 export const ADD_PROS_OR_CONS = gql`
   mutation AddProsOrCons($itemId: String, $prosOrCons: String) {
     addProsOrCons(itemId: $itemId, prosOrCons: $prosOrCons) @client
@@ -213,9 +229,39 @@ export const UPSERT_BLOCK_TO_DB = gql`
   }
 `
 
+export const UPSERT_GRID_TO_DB = gql`
+  mutation UPSERT_GRID_TO_DB(
+    $id: ID!
+    $page: ID!
+    $title: String
+    $items: [GridItemInput]
+    $content: String
+    $order: Int
+  ) {
+    upsertGrid(
+      id: $id
+      page: $page
+      items: $items
+      title: $title
+      content: $content
+      order: $order
+    ) {
+      id
+    }
+  }
+`
+
 export const DELETE_BLOCK_TO_DB = gql`
   mutation DELETE_BLOCK($id: ID!) {
     deleteBlock(id: $id) {
+      id
+    }
+  }
+`
+
+export const DELETE_GRID_TO_DB = gql`
+  mutation DELETE_GRID_TO_DB($id: ID!) {
+    deleteGrid(id: $id) {
       id
     }
   }
@@ -416,6 +462,22 @@ export const UPSERT_PAGE_FAQ_ACCORDIAN_TO_DB = gql`
 export const UPSERT_PAGE_FAQ_TO_DB = gql`
   mutation UPSERT_PAGE_FAQ_TO_DB($id: ID!, $page: ID!, $faq: ID!, $order: Int) {
     upsertPageFaq(id: $id, page: $page, faq: $faq, order: $order) {
+      id
+    }
+  }
+`
+
+export const ADD_GRID_ITEM = gql`
+  mutation ADD_GRID_ITEM ($itemId : ID!) {
+    addGridItem(itemId: $itemId) @client {
+      id
+    }
+  }
+`
+
+export const REMOVE_GRID_ITEM = gql`
+  mutation REMOVE_GRID_ITEM ($itemId : ID!, $gridItemId: ID!) {
+    removeGridItem(itemId: $itemId, gridItemId: $gridItemId) @client {
       id
     }
   }

@@ -65,6 +65,7 @@ const data = {
   quickTips: [],
   pageFaqs: [],
   pageFaqAccordions: [],
+  grids: []
 }
 cache.writeData({
   data,

@@ -214,6 +214,50 @@ export const GET_PROS_AND_CONS_BY_ID = gql`
   }
 `
 
+export const GET_GRID_BY_ID = gql`
+  query GetGridById($itemId: String) {
+    gridById(itemId: $itemId) @client {
+      id
+      title
+      content
+      order
+      items {
+        id
+        title
+        content
+        linkText
+        linkUrl
+        media {
+          id
+          url
+        }
+      }
+    }
+  }
+`
+
+export const GET_GRIDS = gql`
+  query GetGrids {
+    grids @client {
+      id
+      title
+      content
+      order 
+      items {
+        id
+        title
+        content
+        linkText
+        linkUrl
+        media {
+          id
+          url
+        }
+      }
+    }
+  }
+`
+
 export const GET_PAGES_DB = gql`
   query getPages($first: Int, $skip: Int) {
     pages(first: $first, skip: $skip) {
@@ -317,6 +361,23 @@ export const GET_PAGE_DB = gql`
         order
         faq {
           id
+        }
+      }
+      grids{
+        id
+        order
+        title
+        content
+        items {
+          id
+          title
+          content
+          linkText
+          linkUrl
+          media {
+            id
+            url
+          }
         }
       }
     }
