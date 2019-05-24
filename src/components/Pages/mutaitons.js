@@ -189,7 +189,7 @@ export const UPSERT_BLOCK_TO_DB = gql`
     $media: ID
     $title: String!
     $video: String
-    $style: String
+    $alignment: String
     $content: String
     $order: Int
   ) {
@@ -199,14 +199,14 @@ export const UPSERT_BLOCK_TO_DB = gql`
       media: $media
       title: $title
       video: $video
-      style: $style
+      alignment: $alignment
       content: $content
       order: $order
     ) {
       id
       title
       video
-      style
+      alignment
       content
       order
     }
@@ -229,6 +229,7 @@ export const UPSERT_BOX_TO_DB = gql`
     $title: String!
     $video: String
     $style: String
+    $alignment: String
     $content: String
     $order: Int
   ) {
@@ -239,6 +240,7 @@ export const UPSERT_BOX_TO_DB = gql`
       title: $title
       video: $video
       style: $style
+      alignment: $alignment
       content: $content
       order: $order
     ) {
@@ -246,6 +248,7 @@ export const UPSERT_BOX_TO_DB = gql`
       title
       video
       style
+      alignment
       content
       order
     }

@@ -58,6 +58,7 @@ class Box extends Component {
         title: box.title,
         video: box.video,
         style: box.style,
+        alignment: box.alignment,
         content: box.content,
         order: box.order,
       },
@@ -131,7 +132,7 @@ class Box extends Component {
       <Query query={GET_BOX} variables={{ itemId }}>
         {({ data: { box }, loading }) => {
           if (loading) return null
-          const { title, video, style, content, media } = box
+          const { title, video, style, alignment, content, media } = box
 
           return (
             <Fragment>
@@ -160,6 +161,23 @@ class Box extends Component {
                   value={video}
                   onChange={this.handleInputChange}
                 />
+              </Form.Item>
+              <Form.Item label="Alignment">
+                <Select
+                  defaultValue={alignment}
+                  onChange={value =>
+                    this.handleInputChange(null, 'alignment', value)
+                  }
+                >
+                  <Option value="content-left">Content Left</Option>
+                  <Option value="content-right">Content Right</Option>
+                  <Option value="content-left-column">
+                    Content Left Column
+                  </Option>
+                  <Option value="content-right-column">
+                    Content Right Column
+                  </Option>
+                </Select>
               </Form.Item>
               <Form.Item label="Style">
                 <Select

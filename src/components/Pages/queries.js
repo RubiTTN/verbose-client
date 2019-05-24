@@ -34,7 +34,7 @@ export const GET_BLOCKS = gql`
       id
       title
       video
-      style
+      alignment
       content
       order
       media {
@@ -52,7 +52,7 @@ export const GET_BLOCK = gql`
       title
       content
       video
-      style
+      alignment
       order
       media {
         id
@@ -69,6 +69,7 @@ export const GET_BOXES = gql`
       title
       video
       style
+      alignment
       content
       order
       media {
@@ -107,6 +108,7 @@ export const GET_BOX = gql`
       content
       video
       style
+      alignment
       order
       media {
         id
@@ -249,7 +251,7 @@ export const GET_PAGE_DB = gql`
         id
         title
         video
-        style
+        alignment
         content
         order
         media {
@@ -262,6 +264,7 @@ export const GET_PAGE_DB = gql`
         title
         video
         style
+        alignment
         content
         order
         media {
