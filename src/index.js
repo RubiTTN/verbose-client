@@ -30,8 +30,10 @@ const data = {
     id: pageId,
     title: '',
     slug: '',
+    url: '',
     vertical: 'home-loans',
-    type: 'NEWS',
+    template: 'full-width',
+    type: 'PAGE',
     status: 'DRAFT',
     media: {
       id: null,

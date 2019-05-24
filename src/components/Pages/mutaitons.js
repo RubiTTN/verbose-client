@@ -43,7 +43,11 @@ export const UPDATE_BOX = gql`
 `
 
 export const UPDATE_PAGE_FAQ_ACCORDIAN = gql`
-  mutation UpdatePageFaqAccordion($name: String, $value: String, $itemId: String) {
+  mutation UpdatePageFaqAccordion(
+    $name: String
+    $value: String
+    $itemId: String
+  ) {
     UpdatePageFaqAccordion(name: $name, value: $value, itemId: $itemId) @client
   }
 `
@@ -171,8 +175,10 @@ export const UPSERT_PAGE_TO_DB = gql`
     $title: String!
     $media: ID
     $slug: String!
+    $url: String!
     $type: PageType!
     $vertical: String
+    $template: String
     $status: PageStatus!
   ) {
     upsertPage(
@@ -180,15 +186,19 @@ export const UPSERT_PAGE_TO_DB = gql`
       media: $media
       title: $title
       slug: $slug
+      url: $url
       type: $type
       vertical: $vertical
+      template: $template
       status: $status
     ) {
       id
       title
       slug
+      url
       type
       vertical
+      template
       status
     }
   }
@@ -201,7 +211,7 @@ export const UPSERT_BLOCK_TO_DB = gql`
     $media: ID
     $title: String!
     $video: String
-    $style: String
+    $alignment: String
     $content: String
     $order: Int
   ) {
@@ -211,14 +221,14 @@ export const UPSERT_BLOCK_TO_DB = gql`
       media: $media
       title: $title
       video: $video
-      style: $style
+      alignment: $alignment
       content: $content
       order: $order
     ) {
       id
       title
       video
-      style
+      alignment
       content
       order
     }
@@ -271,6 +281,7 @@ export const UPSERT_BOX_TO_DB = gql`
     $title: String!
     $video: String
     $style: String
+    $alignment: String
     $content: String
     $order: Int
   ) {
@@ -281,6 +292,7 @@ export const UPSERT_BOX_TO_DB = gql`
       title: $title
       video: $video
       style: $style
+      alignment: $alignment
       content: $content
       order: $order
     ) {
@@ -288,6 +300,7 @@ export const UPSERT_BOX_TO_DB = gql`
       title
       video
       style
+      alignment
       content
       order
     }
@@ -453,18 +466,8 @@ export const UPSERT_PAGE_FAQ_ACCORDIAN_TO_DB = gql`
 `
 
 export const UPSERT_PAGE_FAQ_TO_DB = gql`
-  mutation UPSERT_PAGE_FAQ_TO_DB(
-    $id: ID!
-    $page: ID!
-    $faq: ID!
-    $order: Int
-  ) {
-    upsertPageFaq(
-      id: $id
-      page: $page
-      faq: $faq
-      order: $order
-    ) {
+  mutation UPSERT_PAGE_FAQ_TO_DB($id: ID!, $page: ID!, $faq: ID!, $order: Int) {
+    upsertPageFaq(id: $id, page: $page, faq: $faq, order: $order) {
       id
     }
   }

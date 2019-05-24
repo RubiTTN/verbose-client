@@ -26,8 +26,10 @@ class AddPage extends Component {
         media: page.media && page.media.id,
         title: page.title,
         slug: page.slug,
+        url: page.url,
         type: page.type,
         vertical: page.vertical,
+        template: page.template,
         status: page.status,
       },
     })

@@ -8,7 +8,9 @@ export const GET_PAGE = gql`
       vertical
       type
       slug
+      url
       status
+      template
       media {
         id
         url
@@ -32,7 +34,7 @@ export const GET_BLOCKS = gql`
       id
       title
       video
-      style
+      alignment
       content
       order
       media {
@@ -50,7 +52,7 @@ export const GET_BLOCK = gql`
       title
       content
       video
-      style
+      alignment
       order
       media {
         id
@@ -67,6 +69,7 @@ export const GET_BOXES = gql`
       title
       video
       style
+      alignment
       content
       order
       media {
@@ -105,6 +108,7 @@ export const GET_BOX = gql`
       content
       video
       style
+      alignment
       order
       media {
         id
@@ -255,14 +259,19 @@ export const GET_GRIDS = gql`
 `
 
 export const GET_PAGES_DB = gql`
-  query getPages {
-    pages {
-      id
-      title
-      slug
-      type
-      vertical
-      status
+  query getPages($first: Int, $skip: Int) {
+    pages(first: $first, skip: $skip) {
+      items {
+        id
+        title
+        slug
+        type
+        vertical
+        status
+      }
+      meta {
+        total_count
+      }
     }
   }
 `
@@ -273,9 +282,11 @@ export const GET_PAGE_DB = gql`
       id
       title
       slug
+      url
       type
       vertical
       status
+      template
       media {
         id
         url
@@ -284,7 +295,7 @@ export const GET_PAGE_DB = gql`
         id
         title
         video
-        style
+        alignment
         content
         order
         media {
@@ -297,6 +308,7 @@ export const GET_PAGE_DB = gql`
         title
         video
         style
+        alignment
         content
         order
         media {
@@ -398,6 +410,14 @@ export const GET_PAGE_FAQ = gql`
       id
       order
       faq
+    }
+  }
+`
+
+export const GENERATE_PAGE_URL = gql`
+  query generatePageUrl($slug: String!, $type: PageType!, $vertical: String!) {
+    generatePageUrl(slug: $slug, type: $type, vertical: $vertical) {
+      url
     }
   }
 `

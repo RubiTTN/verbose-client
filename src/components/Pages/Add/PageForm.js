@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
+import slugify from 'slugify'
+import get from 'lodash/get'
 
 import SelectMedia from '../../Generic/SelectMedia'
-import { GET_PAGE } from '../queries'
+import SelectBox from '../../Generic/SelectBox'
+import InputBox from '../../Generic/InputBox'
+import { GET_PAGE, GENERATE_PAGE_URL } from '../queries'
 import { UPDATE_PAGE, UPDATE_PAGE_MEDIA, DELETE_PAGE_MEDIA } from '../mutaitons'
+import {
+  VERTICAL_OPTIONS,
+  PAGE_TYPE_OPTIONS,
+  PAGE_TEMPLATE_OPTIONS,
+  PAGE_STATUS_OPTIONS,
+} from '../../../constants/common'
 import { PageFormWrapper } from './styles'
-
-const { Option } = Select
 
 class PageForm extends Component {
   handleInputChange = (pageId, e, name, value) => {
@@ -16,11 +23,35 @@ class PageForm extends Component {
     client.mutate({
       mutation: UPDATE_PAGE,
       variables: {
-        name: name || e.target.name,
-        value: value || e.target.value,
+        name: name || get(e, 'target.name', ''),
+        value: value || get(e, 'target.value', ''),
         pageId,
       },
     })
+  }
+
+  generateUpdateSlug = ({ pageId, currentSlug, type, title, vertical }) => {
+    let slug = currentSlug
+    // only generate if there is no slug value and
+    // the page type is news / article
+    if (currentSlug === '' && (type === 'ARTICLE' || type === 'NEWS')) {
+      slug = `/${slugify(title)}`
+      this.handleInputChange(pageId, null, 'slug', slug)
+    }
+    this.updateUrl({ pageId, slug, type, vertical })
+  }
+
+  updateUrl = async ({ pageId, slug, type, vertical }) => {
+    const { client } = this.props
+    const {
+      data: { generatePageUrl },
+    } = await client.query({
+      query: GENERATE_PAGE_URL,
+      variables: { slug, type, vertical },
+    })
+    const { url } = generatePageUrl
+
+    this.handleInputChange(pageId, null, 'url', url)
   }
 
   render() {
@@ -28,20 +59,94 @@ class PageForm extends Component {
       <Query query={GET_PAGE}>
         {({ data: { page }, loading }) => {
           if (loading) return null
-          const { id, title, slug, vertical, type, status, media } = page
+          const {
+            id,
+            title,
+            slug,
+            url,
+            vertical,
+            template,
+            type,
+            status,
+            media,
+          } = page
           const { upsertPage } = this.props
 
           return (
             <PageFormWrapper>
-              <Form.Item label="Title">
-                <Input
-                  name="title"
-                  type="text"
-                  value={title}
-                  onChange={e => this.handleInputChange(id, e)}
-                  onBlur={upsertPage}
-                />
-              </Form.Item>
+              <InputBox
+                label="Title"
+                name="title"
+                type="text"
+                value={title}
+                onChange={e => this.handleInputChange(id, e)}
+                onBlur={upsertPage}
+              />
+              <SelectBox
+                label="Type"
+                options={PAGE_TYPE_OPTIONS}
+                name="type"
+                value={type}
+                onChange={(e, name, value) => {
+                  this.handleInputChange(id, null, name, value)
+                  this.generateUpdateSlug({
+                    pageId: id,
+                    type: value,
+                    currentSlug: slug,
+                    title,
+                    vertical,
+                  })
+                }}
+              />
+              <SelectBox
+                label="Vertical"
+                options={VERTICAL_OPTIONS}
+                name="vertical"
+                value={vertical}
+                onChange={(e, name, value) => {
+                  this.handleInputChange(id, null, name, value)
+                  this.generateUpdateSlug({
+                    pageId: id,
+                    type,
+                    currentSlug: slug,
+                    title,
+                    vertical: value,
+                  })
+                }}
+              />
+              <InputBox
+                label="Slug"
+                name="slug"
+                type="text"
+                placeholder="Slug"
+                value={slug}
+                onChange={e => {
+                  this.handleInputChange(id, e)
+                  this.updateUrl({
+                    pageId: id,
+                    slug: e.target.value,
+                    type,
+                    vertical,
+                  })
+                }}
+              />
+              <InputBox
+                label="URL"
+                name="url"
+                type="text"
+                placeholder="URL"
+                value={url}
+                disabled
+              />
+              <SelectBox
+                label="Template"
+                options={PAGE_TEMPLATE_OPTIONS}
+                name="template"
+                value={template}
+                onChange={(e, name, value) =>
+                  this.handleInputChange(id, null, name, value)
+                }
+              />
               <SelectMedia
                 updateMediaMutation={UPDATE_PAGE_MEDIA}
                 deleteMediaMutation={DELETE_PAGE_MEDIA}
@@ -51,50 +156,15 @@ class PageForm extends Component {
                 }}
                 currentMedia={media}
               />
-              <Form.Item label="Type">
-                <Select
-                  defaultValue={type}
-                  onChange={value => {
-                    this.handleInputChange(id, null, 'type', value)
-                  }}
-                >
-                  <Option value="PAGE">Page</Option>
-                  <Option value="NEWS">News</Option>
-                  <Option value="ARTICLE">Article</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item label="Slug">
-                <Input
-                  name="slug"
-                  type="text"
-                  placeholder="Slug"
-                  value={slug}
-                  onChange={e => this.handleInputChange(id, e)}
-                />
-              </Form.Item>
-              <Form.Item label="Vertical">
-                <Select
-                  defaultValue={vertical}
-                  onChange={value => {
-                    this.handleInputChange(id, null, 'vertical', value)
-                  }}
-                >
-                  <Option value="home-loans">Home Loans</Option>
-                  <Option value="car-loans">Car Loans</Option>
-                  <Option value="personal-loans">Personal Loans</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item label="Status">
-                <Select
-                  defaultValue={status}
-                  onChange={value => {
-                    this.handleInputChange(id, null, 'status', value)
-                  }}
-                >
-                  <Option value="DRAFT">Draft</Option>
-                  <Option value="PUBLISHED">Published</Option>
-                </Select>
-              </Form.Item>
+              <SelectBox
+                label="Status"
+                options={PAGE_STATUS_OPTIONS}
+                name="status"
+                value={status}
+                onChange={(e, name, value) =>
+                  this.handleInputChange(id, null, name, value)
+                }
+              />
             </PageFormWrapper>
           )
         }}

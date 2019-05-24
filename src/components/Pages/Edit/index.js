@@ -33,9 +33,11 @@ class EditPage extends Component {
         id: page.id,
         title: page.title,
         slug: page.slug,
+        url: page.url,
         media: page.media && page.media.id,
         type: page.type,
         vertical: page.vertical,
+        template: page.template,
         status: page.status,
       },
     })
@@ -103,12 +105,15 @@ class EditPage extends Component {
         boxes: sortBy(boxes, ['media']),
         alertBoxes,
         prosAndCons,
-        pageFaqAccordions: faqAccordion.map(faq => ({...faq, faqCategory: faq.faqCategory.id})),
-        pageFaqs: faqs.map(faq => ({...faq, faq: faq.faq.id})),
+        pageFaqAccordions: faqAccordion.map(faq => ({
+          ...faq,
+          faqCategory: faq.faqCategory.id,
+        })),
+        pageFaqs: faqs.map(faq => ({ ...faq, faq: faq.faq.id })),
         quickTips: sortBy(quickTips, ['media']),
         grids,
       },
-    })  
+    })
     if (page) {
       this.setState({ loading: false })
     }
