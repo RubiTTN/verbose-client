@@ -57,7 +57,7 @@ class Block extends Component {
         media: block.media && block.media.id,
         title: block.title,
         video: block.video,
-        style: block.style,
+        alignment: block.alignment,
         content: block.content,
         order: block.order,
       },
@@ -126,7 +126,7 @@ class Block extends Component {
       <Query query={GET_BLOCK} variables={{ itemId }}>
         {({ data: { block }, loading }) => {
           if (loading) return null
-          const { title, video, style, content, media } = block
+          const { title, video, alignment, content, media } = block
 
           return (
             <Fragment>
@@ -156,11 +156,11 @@ class Block extends Component {
                   onChange={this.handleInputChange}
                 />
               </Form.Item>
-              <Form.Item label="Style">
+              <Form.Item label="Alignment">
                 <Select
-                  defaultValue={style}
+                  defaultValue={alignment}
                   onChange={value =>
-                    this.handleInputChange(null, 'style', value)
+                    this.handleInputChange(null, 'alignment', value)
                   }
                 >
                   <Option value="full-width">Full Width</Option>
