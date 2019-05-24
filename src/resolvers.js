@@ -70,9 +70,13 @@ export const resolvers = {
     pageFaqAccordion: (_root, variables, { cache }) => {
       const { itemId } = variables
 
-      const { pageFaqAccordions } = cache.readQuery({ query: GET_PAGE_FAQ_ACCORDIANS })
+      const { pageFaqAccordions } = cache.readQuery({
+        query: GET_PAGE_FAQ_ACCORDIANS,
+      })
 
-      const pageFaqAccordion = pageFaqAccordions.filter(item => item.id === itemId)[0]
+      const pageFaqAccordion = pageFaqAccordions.filter(
+        item => item.id === itemId
+      )[0]
 
       return pageFaqAccordion
     },
@@ -84,7 +88,7 @@ export const resolvers = {
       const pageFaq = pageFaqs.filter(item => item.id === itemId)[0]
 
       return pageFaq
-    }
+    },
   },
   Mutation: {
     updatePage: (_root, variables, { cache, getCacheKey }) => {
@@ -177,7 +181,7 @@ export const resolvers = {
           title: '',
           content: '<p></p>',
           video: '',
-          style: 'full-width',
+          alignment: 'full-width',
           order,
           media: {
             id: null,
@@ -198,6 +202,7 @@ export const resolvers = {
           content: '<p></p>',
           video: '',
           style: 'white',
+          alignment: 'content-right',
           order,
           media: {
             id: null,
@@ -272,7 +277,9 @@ export const resolvers = {
         }
         cache.writeQuery({ query: GET_PROS_AND_CONS, data })
       } else if (type === 'PageFaqAccordion') {
-        const { pageFaqAccordions } = cache.readQuery({ query: GET_PAGE_FAQ_ACCORDIANS })
+        const { pageFaqAccordions } = cache.readQuery({
+          query: GET_PAGE_FAQ_ACCORDIANS,
+        })
         const newPageFaqAccordion = {
           id: newPageItem.itemId,
           faqCategory: '',

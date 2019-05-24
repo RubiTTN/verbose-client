@@ -49,7 +49,7 @@ const data = {
       title: '',
       content: '<p></p>',
       video: '',
-      style: 'full-width',
+      alignment: 'full-width',
       order: 0,
       media: {
         id: null,
