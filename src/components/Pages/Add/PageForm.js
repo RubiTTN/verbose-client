@@ -35,7 +35,7 @@ class PageForm extends Component {
     // only generate if there is no slug value and
     // the page type is news / article
     if (currentSlug === '' && (type === 'ARTICLE' || type === 'NEWS')) {
-      slug = `/${slugify(title)}`
+      slug = `/${slugify(title, { lower: true })}`
       this.handleInputChange(pageId, null, 'slug', slug)
     }
     this.updateUrl({ pageId, slug, type, vertical })
