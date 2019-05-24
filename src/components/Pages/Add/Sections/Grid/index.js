@@ -163,10 +163,12 @@ class Grid extends Component {
                   </Form.Item>
                   <SelectMedia
                     updateMediaMutation={UPDATE_GRID}
+                    deleteMediaMutation={UPDATE_GRID}
                     variables={{
+                      name: 'media',
                       itemId,
                       gridItemId: id,
-                      media: 'selectedMediaValue',
+                      value: 'selectedMediaValue',
                     }}
                     currentMedia={media}
                   />

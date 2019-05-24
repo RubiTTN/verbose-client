@@ -127,12 +127,6 @@ export const UPDATE_GRID = gql`
   }
 `
 
-export const UPDATE_GRIDITEM_MEDIA = gql`
-  mutation UpdateGridItemMedia($media: Media, $itemId: String, $gridItemId: String) {
-    updateGridItemMedia(media: $media, itemId: $itemId, gridItemId: $gridItemId) @client
-  }
-`
-
 export const ADD_PROS_OR_CONS = gql`
   mutation AddProsOrCons($itemId: String, $prosOrCons: String) {
     addProsOrCons(itemId: $itemId, prosOrCons: $prosOrCons) @client

@@ -64,7 +64,7 @@ export const resolvers = {
 
       const { grids } = cache.readQuery({ query: GET_GRIDS })
       const grid = grids.filter(item => item.id === itemId)[0]
-      
+
       return grid
     },
     pageFaqAccordion: (_root, variables, { cache }) => {
@@ -304,7 +304,7 @@ export const resolvers = {
         cache.writeQuery({ query: GET_PAGE_FAQS, data })
       } else if (type === 'Grid') {
         const { grids } = cache.readQuery({ query: GET_GRIDS })
-        const gridId = shortid.generate()+shortid.generate()
+        const gridId = shortid.generate() + shortid.generate()
         const newGrid = {
           id: newPageItem.itemId,
           title: '',
@@ -312,10 +312,10 @@ export const resolvers = {
           order,
           items: [{
             id: gridId,
-            title:'',
-            content:'',
-            linkText:'',
-            linkUrl:'',
+            title: '',
+            content: '',
+            linkText: '',
+            linkUrl: '',
             media: {
               id: null,
               url: null,
@@ -398,7 +398,8 @@ export const resolvers = {
       cache.writeData({ id, data })
     },
     updateGrid: (_root, variables, { cache, getCacheKey }) => {
-      const { name, value, itemId, gridItemId } = variables
+      const { name, itemId, gridItemId } = variables
+      let { value } = variables
       const id = getCacheKey({ __typename: 'Grid', id: itemId })
       if (gridItemId) {
         const fragment = gql`
@@ -420,10 +421,12 @@ export const resolvers = {
         const { items } = previous
         const index = findIndex(items, { id: gridItemId })
         if (index !== -1) {
+          if (name === 'media' && value === 'selectedMediaValue') {
+            value = null
+          }
           items[index][name] = value
-          //Here: Cache expects an Array, not object.
-          const data = [...items]
-          cache.writeData({ id, data })
+          const data = { ...previous, items: [...items] }
+          cache.writeFragment({ fragment, id, data })
         }
       } else {
         const fragment = gql`
@@ -441,14 +444,14 @@ export const resolvers = {
 
       const { grids } = cache.readQuery({ query: GET_GRIDS })
       const grid = find(grids, { id: itemId })
-      const gridId = shortid.generate()+shortid.generate()
+      const gridId = shortid.generate() + shortid.generate()
       grid.items.push({
         id: gridId,
         title: '',
         content: '',
         linkText: '',
         linkUrl: '',
-        media : {
+        media: {
           id: null,
           url: null,
           __typename: 'Media'
@@ -461,10 +464,9 @@ export const resolvers = {
     removeGridItem: (_root, variables, { cache }) => {
       const { itemId, gridItemId } = variables
 
-
       const { grids } = cache.readQuery({ query: GET_GRIDS })
       const grid = find(grids, { id: itemId })
-      const deleteIndex = findIndex(grid.items, {id: gridItemId})
+      const deleteIndex = findIndex(grid.items, { id: gridItemId })
 
       grid.items.splice(deleteIndex, 1)
 
