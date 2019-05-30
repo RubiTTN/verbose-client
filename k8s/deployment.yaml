@@ -1,42 +1,42 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: verbose-client
+  name: content-client
   labels:
-    app: verbose-client
-    service: verbose-client
-  namespace: verbose
+    app: content-client
+    service: content-client
+  namespace: content
 spec:
   ports:
     - port: 3003
       targetPort: 3003
       name: http
   selector:
-    app: verbose-client
+    app: content-client
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: verbose-client
+  name: content-client
   labels:
-    app: verbose-client
-  namespace: verbose
+    app: content-client
+  namespace: content
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: verbose-client
+      app: content-client
   template:
     metadata:
       labels:
-        app: verbose-client
+        app: content-client
     spec:
       containers:
-        - name: verbose-client
-          image: 845778257277.dkr.ecr.ap-southeast-2.amazonaws.com/verbose-client:TAG
+        - name: content-client
+          image: 845778257277.dkr.ecr.ap-southeast-2.amazonaws.com/STAGE/content-client:TAG
           imagePullPolicy: Always
           ports:
             - containerPort: 3003
-          env:
-            - name: REACT_APP_API_SERVER
-              value: "http://verbose.ratecity.com.au/api"
+          envFrom:
+            - secretRef:
+                name: content-client
