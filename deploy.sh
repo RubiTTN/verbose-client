@@ -8,12 +8,16 @@ then
   STAGE=staging
   KUBE_CERTIFICATE=$KUBE_CLUSTER_CERTIFICATE_STAGING
   KUBE_CONFIG=kube.staging.config
+
+  # hack to make the app use staging vars
+  cp .env.staging .env.production
 else
   STAGE=prod
   KUBE_CERTIFICATE=$KUBE_CLUSTER_CERTIFICATE_PROD
   KUBE_CONFIG=kube.prod.config
 fi
 
+cat .env.production
 # Install kubectl
 curl -O "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x ./kubectl
