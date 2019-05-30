@@ -168,6 +168,7 @@ export const UPSERT_PAGE_TO_DB = gql`
     $id: ID!
     $title: String!
     $media: ID
+    $content: String
     $slug: String!
     $url: String!
     $type: PageType!
@@ -180,6 +181,7 @@ export const UPSERT_PAGE_TO_DB = gql`
       media: $media
       title: $title
       slug: $slug
+      content: $content
       url: $url
       type: $type
       vertical: $vertical
@@ -191,6 +193,7 @@ export const UPSERT_PAGE_TO_DB = gql`
       slug
       url
       type
+      content
       vertical
       template
       status
@@ -236,6 +239,7 @@ export const UPSERT_GRID_TO_DB = gql`
     $title: String
     $items: [GridItemInput]
     $content: String
+    $media: ID
     $order: Int
   ) {
     upsertGrid(
@@ -243,6 +247,7 @@ export const UPSERT_GRID_TO_DB = gql`
       page: $page
       items: $items
       title: $title
+      media: $media
       content: $content
       order: $order
     ) {

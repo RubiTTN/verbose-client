@@ -20,6 +20,10 @@ export const PAGE_TYPE_OPTIONS = [
     name: 'Static',
     value: 'STATIC',
   },
+  {
+    name: 'Guide',
+    value: 'GUIDE',
+  },
 ]
 
 export const PAGE_TEMPLATE_OPTIONS = [
