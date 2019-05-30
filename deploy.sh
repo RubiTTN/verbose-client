@@ -8,12 +8,17 @@ then
   STAGE=staging
   KUBE_CERTIFICATE=$KUBE_CLUSTER_CERTIFICATE_STAGING
   KUBE_CONFIG=kube.staging.config
+
+  # hack to make the app use staging vars
+  cp .env.staging .env.production
 else
   STAGE=prod
   KUBE_CERTIFICATE=$KUBE_CLUSTER_CERTIFICATE_PROD
   KUBE_CONFIG=kube.prod.config
 fi
 
+echo "env vars"
+cat .env.production
 # Install kubectl
 curl -O "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x ./kubectl
@@ -25,7 +30,6 @@ curl -o config "https://$GITHUB_ACCESS_TOKEN@raw.githubusercontent.com/ratecity/
 mkdir ${HOME}/.kube
 cp config ${HOME}/.kube/config
 kubectl config set clusters.kubernetes-$STAGE.certificate-authority-data $KUBE_CERTIFICATE
-kubectl config view
 
 # Install awscli
 pip install --user awscli
