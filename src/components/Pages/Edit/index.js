@@ -75,7 +75,16 @@ class EditPage extends Component {
       'grids',
     ])
 
-    const { blocks, boxes, prosAndCons, quickTips, alertBoxes, faqAccordion, faqs, grids } = page
+    const {
+      blocks,
+      boxes,
+      prosAndCons,
+      quickTips,
+      alertBoxes,
+      faqAccordion,
+      faqs,
+      grids,
+    } = page
 
     const pageItems = []
     const pageItemsMerge = [
@@ -125,7 +134,7 @@ class EditPage extends Component {
     return !loading ? (
       <AddNewPageWrapper>
         <Card title="Edit Page">
-          <PageForm upsertPage={this.upsertPage} />
+          <PageForm />
           <SortableList />
           <PageItem />
           <ActionButtonsWrapper>
