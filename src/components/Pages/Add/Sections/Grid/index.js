@@ -6,6 +6,7 @@ import { GridItemsWrapper, BoxSaveButtonWrapper, AddMoreButton } from './styles'
 import { GET_GRID_BY_ID, GET_PAGE } from '../../../queries';
 import { UPDATE_GRID, ADD_GRID_ITEM, REMOVE_GRID_ITEM, UPSERT_GRID_TO_DB, REPLACE_PAGE_ITEMS_ID, DELETE_GRID_TO_DB } from '../../../mutaitons';
 import SelectMedia from '../../../../Generic/SelectMedia';
+import EditorBox from '../../../../Generic/EditorBox';
 
 class Grid extends Component {
   handleInputChange = (e, gridItemId) => {
@@ -15,6 +16,18 @@ class Grid extends Component {
       variables: {
         name: e.target.name,
         value: e.target.value,
+        itemId,
+        gridItemId,
+      }
+    })
+  }
+  handleEditorContent = (name, value, gridItemId) => {
+    const { client, itemId } = this.props
+    client.mutate({
+      mutation: UPDATE_GRID,
+      variables: {
+        name,
+        value,
         itemId,
         gridItemId,
       }
@@ -49,6 +62,7 @@ class Grid extends Component {
         page: page.id,
         title: grid.title,
         content: grid.content,
+        media: grid.media ? grid.media.id : null,
         order: grid.order,
         items,
       }
@@ -137,15 +151,30 @@ class Grid extends Component {
       <Query query={GET_GRID_BY_ID} variables={{itemId}}>
       {({ data: { gridById }, loading }) => {
         if (loading) return null
-        const { title, content, items } = gridById
+        const { title, media, content, items } = gridById
         const showDeleteItemIcon = items.length > 1
         return <Fragment>
         <Form.Item label="Grid Title">
           <Input name="title" type="text" value={title} onChange={this.handleInputChange}/>
         </Form.Item>
-        <Form.Item label="Grid Content">
-          <Input.TextArea name="content" value={content} onChange={this.handleInputChange}/>
-        </Form.Item>
+        <SelectMedia
+          updateMediaMutation={UPDATE_GRID}
+          deleteMediaMutation={UPDATE_GRID}
+          variables={{
+            name: 'media',
+            itemId,
+            value: 'selectedMediaValue',
+          }}
+          currentMedia={media}
+        />
+        <EditorBox
+          label="Content"
+          name="content"
+          value={content}
+          id={itemId}
+          onChange={(noOp, name, value) => this.handleEditorContent(name, value)}
+          insertImage
+        />
 
         <GridItemsWrapper>
           <fieldset>
@@ -178,9 +207,13 @@ class Grid extends Component {
                   <Form.Item label="Link Url">
                     <Input type="text" placeholder="Link Url" name="linkUrl" value={linkUrl} onChange={e => this.handleInputChange(e, id)}/>
                   </Form.Item>
-                  <Form.Item label="Content">
-                    <Input.TextArea name="content" value={content} onChange={e => this.handleInputChange(e, id)}/>
-                  </Form.Item>
+                  <EditorBox
+                    label="Content"
+                    name="content"
+                    value={content}
+                    id={id}
+                    onChange={(noOp, name, value) => this.handleEditorContent(name, value, id)}
+                  />
                 </Card>
               )
             })

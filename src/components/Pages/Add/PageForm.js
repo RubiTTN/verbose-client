@@ -16,6 +16,7 @@ import {
   PAGE_STATUS_OPTIONS,
 } from '../../../constants/common'
 import { PageFormWrapper } from './styles'
+import EditorBox from '../../Generic/EditorBox';
 
 class PageForm extends Component {
   handleInputChange = (pageId, e, name, value) => {
@@ -67,6 +68,7 @@ class PageForm extends Component {
             vertical,
             template,
             type,
+            content,
             status,
             media,
           } = page
@@ -155,6 +157,13 @@ class PageForm extends Component {
                   media: 'selectedMediaValue',
                 }}
                 currentMedia={media}
+              />
+              <EditorBox
+                label="Content"
+                name="content"
+                value={content}
+                id={id}
+                onChange={(e, name, value) => this.handleInputChange(id, null, name, value)}
               />
               <SelectBox
                 label="Status"

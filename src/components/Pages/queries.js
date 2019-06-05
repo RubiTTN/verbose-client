@@ -8,6 +8,7 @@ export const GET_PAGE = gql`
       vertical
       type
       slug
+      content
       url
       status
       template
@@ -220,6 +221,10 @@ export const GET_GRID_BY_ID = gql`
       id
       title
       content
+      media {
+        id
+        url
+      }
       order
       items {
         id
@@ -242,6 +247,10 @@ export const GET_GRIDS = gql`
       id
       title
       content
+      media {
+        id
+        url
+      }
       order 
       items {
         id
@@ -285,6 +294,7 @@ export const GET_PAGE_DB = gql`
       url
       type
       vertical
+      content
       status
       template
       media {
@@ -367,6 +377,10 @@ export const GET_PAGE_DB = gql`
         id
         order
         title
+        media {
+          id
+          url
+        }
         content
         items {
           id

@@ -33,6 +33,7 @@ const data = {
     url: '',
     vertical: 'home-loans',
     template: 'full-width',
+    content: '<p></p>',
     type: 'PAGE',
     status: 'DRAFT',
     media: {

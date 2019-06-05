@@ -101,7 +101,7 @@ export const resolvers = {
         }
       `
       const previous = cache.readFragment({ fragment, id })
-
+      
       const data = { ...previous, [`${name}`]: value }
       cache.writeData({ id, data })
     },
@@ -308,12 +308,17 @@ export const resolvers = {
         const newGrid = {
           id: newPageItem.itemId,
           title: '',
-          content: '',
+          content: '<p></p>',
+          media: {
+            id: null,
+            url: null,
+            __typename: 'Media'
+          },
           order,
           items: [{
             id: gridId,
             title: '',
-            content: '',
+            content: '<p></p>',
             linkText: '',
             linkUrl: '',
             media: {
@@ -428,6 +433,21 @@ export const resolvers = {
           const data = { ...previous, items: [...items] }
           cache.writeFragment({ fragment, id, data })
         }
+      } else if (name === 'media') {
+        const fragment = gql`
+          fragment updateGridMedia on Grid {
+            media {
+              id
+              url
+            }
+          }
+        `
+        const previous = cache.readFragment({ fragment, id })
+        if (value === 'selectedMediaValue') {
+          value = null
+        }
+        const data = { ...previous, media: value }
+        cache.writeFragment({ fragment, id, data })
       } else {
         const fragment = gql`
           fragment updateGrid on Grid {
@@ -448,7 +468,7 @@ export const resolvers = {
       grid.items.push({
         id: gridId,
         title: '',
-        content: '',
+        content: '<p></p>',
         linkText: '',
         linkUrl: '',
         media: {
