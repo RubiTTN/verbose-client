@@ -45,9 +45,9 @@ class AddPage extends Component {
     return (
       <AddNewPageWrapper>
         <Card title="Add New Page">
-          <PageForm upsertPage={this.upsertPage} />
+          <PageForm />
           <SortableList />
-          <AddPageItem />
+          <AddPageItem disabled />
           <ActionButtonsWrapper>
             <Button type="primary" onClick={this.upsertPage}>
               Add Page

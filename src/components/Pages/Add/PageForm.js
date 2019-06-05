@@ -16,7 +16,7 @@ import {
   PAGE_STATUS_OPTIONS,
 } from '../../../constants/common'
 import { PageFormWrapper } from './styles'
-import EditorBox from '../../Generic/EditorBox';
+import EditorBox from '../../Generic/EditorBox'
 
 class PageForm extends Component {
   handleInputChange = (pageId, e, name, value) => {
@@ -72,7 +72,6 @@ class PageForm extends Component {
             status,
             media,
           } = page
-          const { upsertPage } = this.props
 
           return (
             <PageFormWrapper>
@@ -82,7 +81,6 @@ class PageForm extends Component {
                 type="text"
                 value={title}
                 onChange={e => this.handleInputChange(id, e)}
-                onBlur={upsertPage}
               />
               <SelectBox
                 label="Type"
@@ -163,7 +161,9 @@ class PageForm extends Component {
                 name="content"
                 value={content}
                 id={id}
-                onChange={(e, name, value) => this.handleInputChange(id, null, name, value)}
+                onChange={(e, name, value) =>
+                  this.handleInputChange(id, null, name, value)
+                }
               />
               <SelectBox
                 label="Status"
@@ -184,7 +184,6 @@ class PageForm extends Component {
 
 PageForm.propTypes = {
   client: PropTypes.object.isRequired,
-  upsertPage: PropTypes.func.isRequired,
 }
 
 export default withApollo(PageForm)

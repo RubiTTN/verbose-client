@@ -33,6 +33,7 @@ class AddPageItem extends Component {
 
   render() {
     const { addSectionType } = this.state
+    const { disabled } = this.props
     return (
       <SortableActionButtonsWrapper>
         <Select
@@ -48,7 +49,11 @@ class AddPageItem extends Component {
           <Option value="QuickTip">Quick Tip</Option>
           <Option value="Grid">Grid</Option>
         </Select>
-        <Button type="default" onClick={() => this.handleAddPageItem()}>
+        <Button
+          type="default"
+          disabled={disabled}
+          onClick={() => this.handleAddPageItem()}
+        >
           Add Section
         </Button>
       </SortableActionButtonsWrapper>
@@ -58,6 +63,7 @@ class AddPageItem extends Component {
 
 AddPageItem.propTypes = {
   client: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 }
 
 export default withApollo(AddPageItem)

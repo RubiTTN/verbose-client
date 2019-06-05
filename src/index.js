@@ -22,7 +22,6 @@ const client = new ApolloClient({
   resolvers,
 })
 
-const blockId = shortid.generate()
 const pageId = shortid.generate()
 
 const data = {
@@ -43,30 +42,15 @@ const data = {
     },
     __typename: 'Page',
   },
-  pageItems: [{ type: 'Block', itemId: blockId, __typename: 'PageItem' }],
-  blocks: [
-    {
-      id: blockId,
-      title: '',
-      content: '<p></p>',
-      video: '',
-      alignment: 'full-width',
-      order: 0,
-      media: {
-        id: null,
-        url: null,
-        __typename: 'Media',
-      },
-      __typename: 'Block',
-    },
-  ],
+  pageItems: [],
+  blocks: [],
   boxes: [],
   alertBoxes: [],
   prosAndCons: [],
   quickTips: [],
   pageFaqs: [],
   pageFaqAccordions: [],
-  grids: []
+  grids: [],
 }
 cache.writeData({
   data,
