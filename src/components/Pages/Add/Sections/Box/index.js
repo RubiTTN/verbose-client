@@ -171,12 +171,6 @@ class Box extends Component {
                 >
                   <Option value="content-left">Content Left</Option>
                   <Option value="content-right">Content Right</Option>
-                  <Option value="content-left-column">
-                    Content Left Column
-                  </Option>
-                  <Option value="content-right-column">
-                    Content Right Column
-                  </Option>
                 </Select>
               </Form.Item>
               <Form.Item label="Style">
