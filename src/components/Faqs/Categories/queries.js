@@ -20,8 +20,8 @@ export const GET_FAQ_CATEGORY_DB = gql`
 `
 
 export const GET_FAQ_CATEGORIES_DB = gql`
-  query getFaqCategories($first: Int $skip:Int) {
-    faqCategories(first: $first skip: $skip) {         
+  query getFaqCategories($first: Int $skip:Int, $filter: FaqCategoryFilterInput) {
+    faqCategories(first: $first skip: $skip, filter: $filter) {         
       items {
         id
         name
