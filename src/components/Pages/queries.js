@@ -268,8 +268,8 @@ export const GET_GRIDS = gql`
 `
 
 export const GET_PAGES_DB = gql`
-  query getPages($first: Int, $skip: Int) {
-    pages(first: $first, skip: $skip) {
+  query getPages($first: Int, $skip: Int, $filter: PageFilterInput) {
+    pages(first: $first, skip: $skip, filter: $filter) {
       items {
         id
         title

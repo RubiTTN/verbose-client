@@ -49,8 +49,8 @@ export const GET_FAQ_DB = gql`
 `
 
 export const GET_FAQS_DB = gql`
-    query getFaqs($first:Int $skip:Int) {
-        faqs(first: $first skip: $skip) {
+    query getFaqs($first:Int $skip:Int, $filter: FaqFilterInput) {
+        faqs(first: $first skip: $skip, filter: $filter) {
             items {
                 id
                 title

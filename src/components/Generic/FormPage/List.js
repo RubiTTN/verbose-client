@@ -3,14 +3,21 @@ import { withApollo } from 'react-apollo'
 import styled from 'styled-components'
 import { Button } from 'antd'
 import keys from 'lodash/keys'
+import isEmpty from 'lodash/isEmpty'
 
 import { object, string, array } from 'prop-types'
 import DataTable from '../DataTable'
+import { isEqual } from 'apollo-utilities';
 
 const AddNewButton = styled.div`
   text-align: right;
   margin-bottom: 20px;
 `
+const initialPagination = {
+  current: 1,
+  total: 0,
+  pageSize: 8
+}
 
 class ListPage extends React.Component {
   static propTypes = {
@@ -24,11 +31,8 @@ class ListPage extends React.Component {
 
   state = {
     dataSource : [],
-    pagination : {
-      current: 1,
-      total: 0,
-      pageSize: 8
-    },
+    pagination : { ...initialPagination },
+    filter: {},
     loading: false,
   }
 
@@ -36,27 +40,47 @@ class ListPage extends React.Component {
     this.fetchListData();
   }
 
-  handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
-    pager.current = pagination.current;
+  handleTableChange = (_pagination, _filter, sorter) => {
+    let filter = {}, 
+    pagination = _pagination
+
+    if (!isEmpty(_filter)) {
+      for (let key in _filter) {
+        let arrValue = _filter[key]
+        if (arrValue.length) {
+          filter[key] = arrValue.join(" ")
+        }
+      }
+
+      if (!isEqual(filter, this.state.filter)) {
+        pagination = { ...initialPagination }
+      }
+    }
     this.setState({
-      pagination: pager,
+      pagination,
+      filter,
     }, () => {
       this.fetchListData();
     });
   }
 
   fetchListData = async (params = {}) => {
-    const { client, getListQuery} = this.props
-    const { pagination: { current, pageSize: first } } = this.state;
+    const { client, getListQuery } = this.props
+    const { pagination: { current, pageSize: first }, filter } = this.state;
+    let variables = { first , skip: (current - 1) * first }
 
+    if(!isEmpty(filter)) {
+      variables.filter = filter
+    }
+    
     this.setState({ loading: true });
 
     const { data, 
       data : { [keys(data)[0]] : { items: dataSource, meta : {total_count: total} } },
     } = await client.query({
       query: getListQuery,
-      variables: { first , skip: (current - 1) * first },
+      variables,
+      fetchPolicy: "network-only",
     })
     
     const pagination = { ...this.state.pagination, total };
