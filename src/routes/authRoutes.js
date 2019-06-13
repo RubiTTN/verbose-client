@@ -18,10 +18,11 @@ import {
 } from '../components/Faqs/Categories'
 import EditPage from '../components/Pages/Edit'
 import MediaLibrary from '../components/MediaLibrary'
+import Migration from '../components/Migration'
 
 class AuthContent extends React.Component {
   render() {
-    const {updateToken} = this.props;
+    const { updateToken } = this.props
 
     return (
       <Router>
@@ -53,6 +54,7 @@ class AuthContent extends React.Component {
               path="/dashboard/pages/edit/:id"
               component={EditPage}
             />
+            <Route exact path="/dashboard/migration" component={Migration} />
             <Route exact path="/dashboard/media" component={MediaLibrary} />
             <Route path="/" render={() => <Redirect to="/dashboard" />} />
           </Switch>
