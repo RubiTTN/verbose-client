@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { Form, Input, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
-import EditorBox from '../../../../Generic/EditorBox'
 import SelectMedia from '../../../../Generic/SelectMedia'
+import InputBox from '../../../../Generic/InputBox'
 import { GET_QUICK_TIP, GET_PAGE } from '../../../queries'
 import {
   UPDATE_QUICK_TIP,
@@ -163,13 +163,13 @@ class QuickTip extends Component {
                 }}
                 currentMedia={media}
               />
-              <EditorBox
+              <InputBox
                 label="Content"
                 name="content"
+                type="textarea"
+                placeholder="Content"
                 value={content}
-                id={itemId}
                 onChange={this.handleInputChange}
-                insertImage
               />
               <QuickTipSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteQuickTip}>
