@@ -1,8 +1,19 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Row, Col, Button, Icon, Modal, message } from 'antd'
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Button,
+  Icon,
+  Modal,
+  message,
+  Checkbox,
+} from 'antd'
 import { Query, withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
 import omit from 'lodash/omit'
+import get from 'lodash/get'
 
 import { ProsAndConsSaveButtonWrapper } from './styles'
 import { GET_PAGE, GET_PROS_AND_CONS_BY_ID } from '../../../queries'
@@ -24,8 +35,8 @@ class ProsAndCons extends Component {
     client.mutate({
       mutation: UPDATE_PROS_AND_CONS,
       variables: {
-        name: name || e.target.name,
-        value: value || e.target.value,
+        name: get(e, 'target.name') || name,
+        value: get(e, 'target.value') || value,
         itemId,
         prosId,
         consId,
@@ -102,6 +113,7 @@ class ProsAndCons extends Component {
         title: prosAndConsById.title,
         pros,
         cons,
+        top: prosAndConsById.top,
         order: prosAndConsById.order,
       },
     })
@@ -170,7 +182,7 @@ class ProsAndCons extends Component {
         {({ data: { prosAndConsById }, loading }) => {
           if (loading) return null
 
-          const { title, pros, cons } = prosAndConsById
+          const { title, pros, cons, top } = prosAndConsById
 
           const renderProsItems = pros.map(item => (
             <Row key={item.id}>
@@ -251,6 +263,16 @@ class ProsAndCons extends Component {
                   </Form.Item>
                 </Col>
               </Row>
+              <Form.Item>
+                <Checkbox
+                  onChange={e =>
+                    this.handleInputChange(null, 'top', e.target.checked)
+                  }
+                  checked={top}
+                >
+                  Top Section
+                </Checkbox>
+              </Form.Item>
               <ProsAndConsSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteProsAndCons}>
                   Delete

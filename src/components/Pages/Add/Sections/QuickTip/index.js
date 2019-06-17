@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Button, Modal, message } from 'antd'
+import { Form, Input, Button, Modal, message, Checkbox } from 'antd'
 import { Query, withApollo } from 'react-apollo'
+import get from 'lodash/get'
 
 import SelectMedia from '../../../../Generic/SelectMedia'
 import InputBox from '../../../../Generic/InputBox'
@@ -25,8 +26,8 @@ class QuickTip extends Component {
     client.mutate({
       mutation: UPDATE_QUICK_TIP,
       variables: {
-        name: name || e.target.name,
-        value: value || e.target.value,
+        name: get(e, 'target.name') || name,
+        value: get(e, 'target.value') || value,
         itemId,
       },
     })
@@ -58,6 +59,7 @@ class QuickTip extends Component {
         content: quickTip.content,
         buttonText: quickTip.buttonText,
         buttonLink: quickTip.buttonLink,
+        top: quickTip.top,
         order: quickTip.order,
       },
     })
@@ -125,7 +127,14 @@ class QuickTip extends Component {
       <Query query={GET_QUICK_TIP} variables={{ itemId }}>
         {({ data: { quickTip }, loading }) => {
           if (loading) return null
-          const { title, content, buttonText, buttonLink, media } = quickTip
+          const {
+            title,
+            content,
+            buttonText,
+            buttonLink,
+            media,
+            top,
+          } = quickTip
           return (
             <Fragment>
               <Form.Item label="Title">
@@ -171,6 +180,16 @@ class QuickTip extends Component {
                 value={content}
                 onChange={this.handleInputChange}
               />
+              <Form.Item>
+                <Checkbox
+                  onChange={e =>
+                    this.handleInputChange(null, 'top', e.target.checked)
+                  }
+                  checked={top}
+                >
+                  Top Section
+                </Checkbox>
+              </Form.Item>
               <QuickTipSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteQuickTip}>
                   Delete

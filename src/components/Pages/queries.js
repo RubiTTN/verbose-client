@@ -37,6 +37,7 @@ export const GET_BLOCKS = gql`
       video
       alignment
       content
+      top
       order
       media {
         id
@@ -54,6 +55,7 @@ export const GET_BLOCK = gql`
       content
       video
       alignment
+      top
       order
       media {
         id
@@ -72,6 +74,26 @@ export const GET_BOXES = gql`
       style
       alignment
       content
+      top
+      order
+      media {
+        id
+        url
+      }
+    }
+  }
+`
+
+export const GET_BOX = gql`
+  query GetBox($itemId: String) {
+    box(itemId: $itemId) @client {
+      id
+      title
+      content
+      top
+      video
+      style
+      alignment
       order
       media {
         id
@@ -101,24 +123,6 @@ export const GET_PAGE_FAQS = gql`
   }
 `
 
-export const GET_BOX = gql`
-  query GetBox($itemId: String) {
-    box(itemId: $itemId) @client {
-      id
-      title
-      content
-      video
-      style
-      alignment
-      order
-      media {
-        id
-        url
-      }
-    }
-  }
-`
-
 export const GET_ALERT_BOXES = gql`
   query GetAlertBoxes {
     alertBoxes @client {
@@ -127,6 +131,7 @@ export const GET_ALERT_BOXES = gql`
       content
       prefix
       style
+      top
       order
     }
   }
@@ -140,6 +145,7 @@ export const GET_ALERT_BOX = gql`
       content
       prefix
       style
+      top
       order
     }
   }
@@ -153,6 +159,7 @@ export const GET_QUICK_TIPS = gql`
       content
       buttonText
       buttonLink
+      top
       order
       media {
         id
@@ -170,6 +177,7 @@ export const GET_QUICK_TIP = gql`
       content
       buttonText
       buttonLink
+      top
       order
       media {
         id
@@ -184,6 +192,7 @@ export const GET_PROS_AND_CONS = gql`
     prosAndCons @client {
       id
       title
+      top
       order
       pros {
         id
@@ -202,6 +211,7 @@ export const GET_PROS_AND_CONS_BY_ID = gql`
     prosAndConsById(itemId: $itemId) @client {
       id
       title
+      top
       order
       pros {
         id
@@ -251,7 +261,7 @@ export const GET_GRIDS = gql`
         id
         url
       }
-      order 
+      order
       items {
         id
         title
@@ -307,6 +317,7 @@ export const GET_PAGE_DB = gql`
         video
         alignment
         content
+        top
         order
         media {
           id
@@ -320,6 +331,7 @@ export const GET_PAGE_DB = gql`
         style
         alignment
         content
+        top
         order
         media {
           id
@@ -332,6 +344,7 @@ export const GET_PAGE_DB = gql`
         content
         prefix
         style
+        top
         order
       }
       quickTips {
@@ -340,6 +353,7 @@ export const GET_PAGE_DB = gql`
         content
         buttonText
         buttonLink
+        top
         order
         media {
           id
@@ -349,6 +363,7 @@ export const GET_PAGE_DB = gql`
       prosAndCons {
         id
         title
+        top
         order
         pros {
           id
@@ -373,7 +388,7 @@ export const GET_PAGE_DB = gql`
           id
         }
       }
-      grids{
+      grids {
         id
         order
         title

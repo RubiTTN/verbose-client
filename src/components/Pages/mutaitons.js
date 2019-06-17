@@ -210,6 +210,7 @@ export const UPSERT_BLOCK_TO_DB = gql`
     $video: String
     $alignment: String
     $content: String
+    $top: Boolean
     $order: Int
   ) {
     upsertBlock(
@@ -220,6 +221,7 @@ export const UPSERT_BLOCK_TO_DB = gql`
       video: $video
       alignment: $alignment
       content: $content
+      top: $top
       order: $order
     ) {
       id
@@ -227,6 +229,7 @@ export const UPSERT_BLOCK_TO_DB = gql`
       video
       alignment
       content
+      top
       order
     }
   }
@@ -282,6 +285,7 @@ export const UPSERT_BOX_TO_DB = gql`
     $style: String
     $alignment: String
     $content: String
+    $top: Boolean
     $order: Int
   ) {
     upsertBox(
@@ -293,6 +297,7 @@ export const UPSERT_BOX_TO_DB = gql`
       style: $style
       alignment: $alignment
       content: $content
+      top: $top
       order: $order
     ) {
       id
@@ -301,6 +306,7 @@ export const UPSERT_BOX_TO_DB = gql`
       style
       alignment
       content
+      top
       order
     }
   }
@@ -339,6 +345,7 @@ export const UPSERT_ALERT_BOX_TO_DB = gql`
     $prefix: String
     $style: String
     $order: Int
+    $top: Boolean
   ) {
     upsertAlertBox(
       id: $id
@@ -348,12 +355,14 @@ export const UPSERT_ALERT_BOX_TO_DB = gql`
       prefix: $prefix
       order: $order
       style: $style
+      top: $top
     ) {
       id
       title
       content
       prefix
       style
+      top
       order
     }
   }
@@ -376,6 +385,7 @@ export const UPSERT_QUICK_TIP_TO_DB = gql`
     $content: String
     $buttonText: String
     $buttonLink: String
+    $top: Boolean
     $order: Int
   ) {
     upsertQuickTip(
@@ -386,6 +396,7 @@ export const UPSERT_QUICK_TIP_TO_DB = gql`
       content: $content
       buttonText: $buttonText
       buttonLink: $buttonLink
+      top: $top
       order: $order
     ) {
       id
@@ -393,6 +404,7 @@ export const UPSERT_QUICK_TIP_TO_DB = gql`
       content
       buttonText
       buttonLink
+      top
       order
     }
   }
@@ -413,6 +425,7 @@ export const UPSERT_PROS_AND_CONS_TO_DB = gql`
     $title: String
     $pros: [ProConInput]
     $cons: [ProConInput]
+    $top: Boolean
     $order: Int
   ) {
     upsertProsAndCons(
@@ -421,10 +434,12 @@ export const UPSERT_PROS_AND_CONS_TO_DB = gql`
       title: $title
       pros: $pros
       cons: $cons
+      top: $top
       order: $order
     ) {
       id
       title
+      top
       order
     }
   }
@@ -473,7 +488,7 @@ export const UPSERT_PAGE_FAQ_TO_DB = gql`
 `
 
 export const ADD_GRID_ITEM = gql`
-  mutation ADD_GRID_ITEM ($itemId : ID!) {
+  mutation ADD_GRID_ITEM($itemId: ID!) {
     addGridItem(itemId: $itemId) @client {
       id
     }
@@ -481,7 +496,7 @@ export const ADD_GRID_ITEM = gql`
 `
 
 export const REMOVE_GRID_ITEM = gql`
-  mutation REMOVE_GRID_ITEM ($itemId : ID!, $gridItemId: ID!) {
+  mutation REMOVE_GRID_ITEM($itemId: ID!, $gridItemId: ID!) {
     removeGridItem(itemId: $itemId, gridItemId: $gridItemId) @client {
       id
     }
