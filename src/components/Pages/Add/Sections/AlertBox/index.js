@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Button, Modal, Select, message } from 'antd'
+import { Form, Input, Button, Modal, Select, message, Checkbox } from 'antd'
 import { Query, withApollo } from 'react-apollo'
+import get from 'lodash/get'
 
 import EditorBox from '../../../../Generic/EditorBox'
 import { GET_ALERT_BOX, GET_PAGE } from '../../../queries'
@@ -23,8 +24,8 @@ class AlertBox extends Component {
     client.mutate({
       mutation: UPDATE_ALERT_BOX,
       variables: {
-        name: name || e.target.name,
-        value: value || e.target.value,
+        name: get(e, 'target.name') || name,
+        value: get(e, 'target.value') || value,
         itemId,
       },
     })
@@ -55,6 +56,7 @@ class AlertBox extends Component {
         content: alertBox.content,
         prefix: alertBox.prefix,
         style: alertBox.style,
+        top: alertBox.top,
         order: alertBox.order,
       },
     })
@@ -122,7 +124,7 @@ class AlertBox extends Component {
       <Query query={GET_ALERT_BOX} variables={{ itemId }}>
         {({ data: { alertBox }, loading }) => {
           if (loading) return null
-          const { title, content, prefix, style } = alertBox
+          const { title, content, prefix, style, top } = alertBox
           return (
             <Fragment>
               <Form.Item label="Title">
@@ -163,6 +165,16 @@ class AlertBox extends Component {
                 onChange={this.handleInputChange}
                 insertImage
               />
+              <Form.Item>
+                <Checkbox
+                  onChange={e =>
+                    this.handleInputChange(null, 'top', e.target.checked)
+                  }
+                  checked={top}
+                >
+                  Top Section
+                </Checkbox>
+              </Form.Item>
               <AlertBoxSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteAlertBox}>
                   Delete

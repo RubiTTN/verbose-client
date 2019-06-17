@@ -101,7 +101,7 @@ export const resolvers = {
         }
       `
       const previous = cache.readFragment({ fragment, id })
-      
+
       const data = { ...previous, [`${name}`]: value }
       cache.writeData({ id, data })
     },
@@ -182,6 +182,7 @@ export const resolvers = {
           content: '<p></p>',
           video: '',
           alignment: 'full-width',
+          top: false,
           order,
           media: {
             id: null,
@@ -203,6 +204,7 @@ export const resolvers = {
           video: '',
           style: 'white',
           alignment: 'content-right',
+          top: false,
           order,
           media: {
             id: null,
@@ -223,6 +225,7 @@ export const resolvers = {
           content: '<p></p>',
           prefix: '',
           style: 'tip',
+          top: false,
           order,
           __typename: 'AlertBox',
         }
@@ -243,6 +246,7 @@ export const resolvers = {
             url: null,
             __typename: 'Media',
           },
+          top: false,
           order,
           __typename: 'QuickTip',
         }
@@ -269,6 +273,7 @@ export const resolvers = {
               __typename: 'Cons',
             },
           ],
+          top: false,
           order,
           __typename: 'ProsAndCons',
         }
@@ -312,22 +317,24 @@ export const resolvers = {
           media: {
             id: null,
             url: null,
-            __typename: 'Media'
+            __typename: 'Media',
           },
           order,
-          items: [{
-            id: gridId,
-            title: '',
-            content: '<p></p>',
-            linkText: '',
-            linkUrl: '',
-            media: {
-              id: null,
-              url: null,
-              __typename: 'Media',
+          items: [
+            {
+              id: gridId,
+              title: '',
+              content: '<p></p>',
+              linkText: '',
+              linkUrl: '',
+              media: {
+                id: null,
+                url: null,
+                __typename: 'Media',
+              },
+              __typename: 'GridItem',
             },
-            __typename: 'GridItem'
-          }],
+          ],
           __typename: 'Grid',
         }
         data = {
@@ -474,9 +481,9 @@ export const resolvers = {
         media: {
           id: null,
           url: null,
-          __typename: 'Media'
+          __typename: 'Media',
         },
-        __typename: 'GridItem'
+        __typename: 'GridItem',
       })
       const data = { grids }
       cache.writeQuery({ query: GET_GRIDS, data })

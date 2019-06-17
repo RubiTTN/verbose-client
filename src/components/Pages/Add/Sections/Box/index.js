@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Select, Button, Modal, message } from 'antd'
+import { Form, Input, Select, Button, Modal, message, Checkbox } from 'antd'
 import { Query, withApollo } from 'react-apollo'
+import get from 'lodash/get'
 
 import EditorBox from '../../../../Generic/EditorBox'
 import SelectMedia from '../../../../Generic/SelectMedia'
@@ -26,8 +27,8 @@ class Box extends Component {
     client.mutate({
       mutation: UPDATE_BOX,
       variables: {
-        name: name || e.target.name,
-        value: value || e.target.value,
+        name: get(e, 'target.name') || name,
+        value: get(e, 'target.value') || value,
         itemId,
       },
     })
@@ -60,6 +61,7 @@ class Box extends Component {
         style: box.style,
         alignment: box.alignment,
         content: box.content,
+        top: box.top,
         order: box.order,
       },
     })
@@ -132,7 +134,7 @@ class Box extends Component {
       <Query query={GET_BOX} variables={{ itemId }}>
         {({ data: { box }, loading }) => {
           if (loading) return null
-          const { title, video, style, alignment, content, media } = box
+          const { title, video, style, alignment, content, media, top } = box
 
           return (
             <Fragment>
@@ -193,6 +195,16 @@ class Box extends Component {
                 onChange={this.handleInputChange}
                 insertImage
               />
+              <Form.Item>
+                <Checkbox
+                  onChange={e =>
+                    this.handleInputChange(null, 'top', e.target.checked)
+                  }
+                  checked={top}
+                >
+                  Top Section
+                </Checkbox>
+              </Form.Item>
               <BoxSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteBox}>
                   Delete
