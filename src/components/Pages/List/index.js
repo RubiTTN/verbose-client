@@ -6,6 +6,7 @@ const editUrl = '/dashboard/pages/edit'
 const attributes = ['title', 'slug', 'type', 'vertical', 'status']
 
 export default function PageList({ history }) {
+  console.log('')
   return (
     <ListPage
       getListQuery={GET_PAGES_DB}
